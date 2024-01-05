@@ -16,7 +16,7 @@ const { USERNAME, PASSWORD, INTERVAL_TIME } = require("./constant");
       const page = pages[0];
 
       // 뷰포트 설정
-      await page.setViewport({ width: 960, height: 1080 });
+      await page.setViewport({ width: 0, height: 0 });
 
       // 저장된 쿠키가 있으면 불러오기
       if (fs.existsSync("./data/cookies.json")) {
@@ -169,7 +169,7 @@ const { USERNAME, PASSWORD, INTERVAL_TIME } = require("./constant");
     const page = await browserSetting();
     await login();
     await goToDataPage();
-    await console.log(
+    console.log(
       "지속 스케줄 내보내기 시작. 새로고침 주기:",
       INTERVAL_TIME / 1000,
       "초"
