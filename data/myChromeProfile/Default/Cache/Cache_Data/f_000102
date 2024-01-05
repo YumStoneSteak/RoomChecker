@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta name="robots" content="noindex">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0,	maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+	<title>KT bizmeka EZ</title>
+	<script type="text/javascript" nonce="b2241a82b80f45eeb9c0442b7f1" src="//local.adguard.org?ts=1704419258378&amp;type=content-script&amp;dmn=ezsso.bizmeka.com&amp;url=https%3A%2F%2Fezsso.bizmeka.com%2FloginForm.do&amp;app=chrome.exe&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script>
+<script type="text/javascript" nonce="b2241a82b80f45eeb9c0442b7f1" src="//local.adguard.org?ts=1704419258378&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script><link rel="stylesheet" href="/css/common.css" />
+	<!-- favicon -->
+	<link rel="shortcut icon" href="/images/common/favicon.ico">
+	<link rel="stylesheet" href="/css/sprologin.css" />
+
+	<script type="text/javascript">
+		var PO_BASE_URL = "https://ezportal.bizmeka.com";
+
+		if(opener) {	
+			var ctl = true;	
+			var regex = new RegExp("^([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+			var ts = location.href;
+			
+			try {
+				opener.document;
+			} catch(e) {
+				document.domain = location.hostname.replace(/([a-zA-Z0-9-]+.)/, "");
+				try {
+					opener.document;
+				} catch(e) { ctl = false; }
+			}
+			
+			if(ctl) {
+				if (regex.test(ts)) {
+					opener.location.href = ts;
+					window.close();
+				} else {
+// 					alert("올바른 요청이 아닙니다.");
+				}				
+				
+			}
+		} else if(top != window) {	
+		
+			var regex = new RegExp("^([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+			var ts = location.href;
+			
+			try {
+				top.document;
+			} catch(e) {
+				document.domain = location.hostname.replace(/([a-zA-Z0-9]+.)/, "");
+			}
+			if (regex.test(ts)) {			
+				top.location.href = ts;
+			} else {
+				top.location.reload();
+// 				alert("올바른 요청이 아닙니다.");
+			}
+		}
+		
+	</script>
+	<script type="text/javascript">var contextRoot = "";</script>
+	<script type="text/javascript" src="/js/langResource/en.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-1.11.3.min.js"></script>
+	<![endif]-->
+	<!--[if gte IE 9]>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-2.1.4.min.js"></script>
+	<![endif]-->
+	<!--[if !IE]> -->
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-2.1.4.min.js"></script>
+	<!-- <![endif]-->
+	<script type="text/javascript">jQuery.migrateMute = true;</script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/plugins.js"></script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/commonSProject.js"></script>
+	
+	<script type="text/javascript" src="/JavaScriptServlet"></script>
+	
+	<script type="text/javascript" src="/js/rsa/jsbn.js"></script>
+	<script type="text/javascript" src="/js/rsa/rsa.js"></script>
+	<script type="text/javascript" src="/js/rsa/prng4.js"></script>
+	<script type="text/javascript" src="/js/rsa/rng.js"></script>
+	<script type="text/javascript" src="/js/crypto/aes.js"></script>
+	<script type="text/javascript" src="/js/settings.js"></script>
+	
+	<script type="text/javascript">
+	
+	var goLogin, $form, $sendForm;
+	var click = true;	
+	(function($){
+
+		goLogin = function() {
+			var name = $.trim($("#username").val());
+			var password = $("#password").val();
+			
+			var sproKeyModulus = $("#sproKeyModulus").val();
+	        var sproKeyExponent = $("#sproKeyExponent").val();
+
+	        var rsa = new RSAKey();
+	        rsa.setPublic(sproKeyModulus, sproKeyExponent);
+
+			if(name == "") {
+				alert("아이디를 입력하여 주십시오.");
+				$("#username").focus();
+				return false;
+			}
+			
+			if(password == "") {
+				alert("비밀번호를 입력하여 주십시오.");
+				$("#password").focus();
+				return false;
+			}
+			
+			var domain = document.domain;
+			var securedUsername = rsa.encrypt(name);
+		    var securedPassword = rsa.encrypt(password);
+		    
+		    if($("#saveID").is(":checked")) {
+				localStorage.setItem("LOGIN_SAVEID", name);
+			} else {
+				localStorage.removeItem("LOGIN_SAVEID");
+			}
+
+		    $("#j_username").val(securedUsername);
+		    $("#j_password").val(securedPassword + '9D20F3782235D422EF0A6662A495401E192774D7BC13C67924099EB1C506B0537B45ADFC102FC49FDDF1C6F969C616CBF3AE877D7A30C5519CD94AFC84B4506C80C01AB5690ADAFDB1D6836528E9A87AD8707AFA10007B911F5949A5665710D92994F0ADDB181C60CFEF6D72A8AF38AD0EC7B7E1A612BD6E4F90B45BB432A1FEC0F9C73BCE62660A335DBF174AD6097BC0911C6A19576A4EBC38829663D0EA95169A94F440AC2A24592C79152D5B822DEEBC6ADDEB8FFBA223E06C3CB1EC1A8FA5B4E323614EAAB18DFD29A463564F0CB3DE67DB42490818472B194999BEE25F852596435C8C93863FF49E8B22607B306E8450881FC81280A611A8D05A67F6D6');
+			
+			return true;
+		};
+		
+		$(document).ready(function(){
+			
+			$form = $("#loginForm");
+			$sendForm = $("#loginSendForm");
+			var companyName = $.cookie("COMPANY_NAME") || "KT bizmeka EZ";
+			if(companyName){
+				$("#companyName").text(decodeURIComponent(companyName));
+			}
+			
+			$("#username").focus();
+			
+			$("#btnSubmit").click(function() {
+				$("#bannerUrl").val("");
+				var name = $.trim($("#username").val());
+				var password = $("#password").val();
+				
+				if(name == "") {
+					alert("아이디를 입력하여 주십시오.");
+					$("#username").focus();
+					return false;
+				}
+				
+				if(password == "") {
+					alert("비밀번호를 입력하여 주십시오.");
+					$("#password").focus();
+					return false;
+				}
+				//인증번호로그인 체크 확인
+				if($("input[name='loginType']:checked").val() == "captchLogin"){
+					var $input = $("input[name=answerData]").val();
+					var captcha = $("#answerData").get(0).Captcha;
+					if($input.length == 6) {
+						var obj_data = new Object();
+						obj_data.answerData = $("input[name=answerData]").val();
+						obj_data.captchaId = captcha.Id;
+						obj_data.instanceId = captcha.InstanceId;
+					
+						$.ajax({
+			 				url : "/loginIsCaptcha.do",
+			 				data: obj_data,
+			 				type : "post",
+			 				success : function(result){
+			 					if(result == "FAIL") {
+			 						alert("캡차 번호가 맞지 않습니다.\n다시 입력해 주세요.");
+			 						$("#answerData").get(0).Captcha.ReloadImage();
+			 						return;
+			 					}else{
+			 						$("input[name=captchaInput]", $sendForm).val($("#answerData").val());
+			 						sendFormSubmit();	
+			 					}
+			 				},
+			 				error : function(xhr){
+			 					alert("이용에 불편을 드려 죄송합니다.");	
+			 				}
+			 			});
+					} else {
+						alert("보안문자 6자리로 입력해 주세요.");
+						return false;
+					}
+				}else{
+					sendFormSubmit();
+				}
+			});
+			
+			sendFormSubmit = function(){
+				if(click){
+					click = false;
+						
+					$sendForm.submit();
+				}else{
+					 // 타이밍 추가
+		            setTimeout(function () {
+		                click = true;
+		            }, 1000)
+					return false;
+				}	
+			}
+			
+			$('#password').keypress( function(event) {
+				if(event.which == 13) {
+					$("#btnSubmit").trigger("click");
+					return false;
+				}else{
+					kc = event.keyCode ? event.keyCode : event.which;
+					sk = event.shiftKey ? event.shiftKey : ((kc == 16) ? true : false);
+					
+					if(((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)){
+						$("#capsLockTip").show();
+					}else{
+						$("#capsLockTip").hide();
+					}				
+				}
+			});
+			
+			$('#password').focusout(function() {
+				$("#capsLockTip").hide();
+			});
+			
+			var savedId = localStorage.getItem("LOGIN_SAVEID");
+			if( savedId ){
+				$("input[name=username]").val(savedId);
+			}
+			
+			//인증번호 로그인 체크
+			var authNumLoginCk = $.cookie("AUTH_NUM_LOGIN");
+			if( authNumLoginCk == 1 ){
+				$("input[name='loginType']:radio[value='captchLogin']").prop("checked", true); 
+				$("#login-container").css("height","500px");
+				$(".login-form").css("height","500px");
+				$(".login-banner").css("top","500px");
+				$("#captchaDiv").css("display","");
+				$("#btnSubmit").css("margin","0 0 0 0");	
+			}			
+			//인증번호 로그인 체크 값 변경시
+			$("input[name='loginType']").change(function(event) {
+				if($("input[name='loginType']:checked").val() == "authNumLogin"){
+					$("#login-container").css("height","360px");
+					$(".login-form").css("height","360px");
+					$(".login-banner").css("top","360px");
+					$("#captchaDiv").css("display","none");
+					$("#btnSubmit").css("margin","30px 0 4px");
+					$.cookie("AUTH_NUM_LOGIN", "0", {path:"/", expires:new Date(9999, 12, 31, 0, 0, 0)});
+				}else{
+					$.cookie("AUTH_NUM_LOGIN", "1", {path:"/", expires:new Date(9999, 12, 31, 0, 0, 0)});
+					$("#login-container").css("height","500px");
+					$(".login-form").css("height","500px");
+					$(".login-banner").css("top","500px");
+					$("#captchaDiv").css("display","");
+					$("#btnSubmit").css("margin","0 0 0 0");
+				}
+			});
+			//---------------------------------------------- 보안문자(캡차) 로직 시작 -------------------------------------------- //
+			$("#captchaBtnReload").click(function(event) {
+				event.preventDefault();
+				$("#answerData").get(0).Captcha.ReloadImage();
+			});
+			$("#captchaBtnReload2").click(function(event) {
+				event.preventDefault();
+				$("#answerData").get(0).Captcha.ReloadImage();
+			});
+			$("#captchaBtnSound").click(function(event) {
+				event.preventDefault();
+				$("#answerData").get(0).Captcha.PlaySound();
+			});
+			
+			$("#answerData").keypress( function(event) {
+				if(event.which == 13) {
+					$("#btnSubmit").trigger("click");
+					return false;
+				}
+			});
+			
+			//---------------------------------------------- 보안문자(캡차) 로직 종료  -------------------------------------------- //
+			$('.side-bar').click(function(){
+				var $leftmenu = $('#sidemenu');
+				
+				if($leftmenu.hasClass('opened')){
+					$leftmenu.removeClass('opened');
+				}else{
+					$leftmenu.addClass('opened');
+				}
+			});
+			
+			$("#loginGuide").click(function(event) {
+	 			event.preventDefault();
+	 			
+	 			$("#divLoginGuide").modal("show");
+	 		});
+			
+			var version = Number($.browser.version);
+	 		if($.browser && ($.browser.msie && version < 9)) {
+	 			var $noti = $('<div class="ie8-niti">' +
+						'<h1>고객님께서 사용하시는 브라우저는 Internet Explorer 8 이하 버전입니다.</h1>' +
+					  	'<p>' +
+					  		'KT bizmeka EZ는 Internet Explorer 9 이상에 최적화되어 있습니다.<br>' +
+					  		'현재 사용하시는 Internet Explorer를 업그레이드하거나, 다른 브라우저(크롬, 파이어폭스)를<br>사용하시기 바랍니다.<br/>' +
+					  		'<a href="http://windows.microsoft.com/ko-KR/internet-explorer/download-ie" target="_blank">Internet Explorer 최신버전 다운로드</a>&nbsp;&nbsp;' +
+					  		'<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">크롬 다운로드</a>&nbsp;&nbsp;' +
+					  		'<a href="https://www.mozilla.org/ko/firefox/new/" target="_blank">파이어폭스 다운로드</a>' +
+					  		'</p>' +
+					  	'<a href="#a" class="btn-close"><span>X</span><span class="blind">닫기</span></a>' +
+					'</div>');
+						
+				$("a.btn-close", $noti).click(function() {
+					$noti.remove();
+				});
+
+				$noti.appendTo(document.body);
+	 		}
+
+	 		$("a[data-role='banner']").on("click", function(){
+	 			var itemId = $(this).data("bannerId");
+	 			var itemUrl = $(this).data("bannerUrl");
+	 			var itemOption = $(this).data("bannerOption");
+	 			var windowName = $(this).data("bannerName");
+	 			$.ajax({
+	 				url : "/support/accesslog/createAccessLog.do",
+	 				data: {
+	 					"systemId" : "SO",
+	 					"itemId" : itemId
+	 				},
+	 				type : "post",
+	 				success : function(data){},
+	 				error : function(xhr){}
+	 			});
+				if(itemOption == ""){
+					var openNewWindow = window.open("about:blank");
+					openNewWindow.location.href = itemUrl;	
+				}else{
+		 			spro.popupOpen(itemUrl,itemOption,windowName);
+				}
+			});	 		
+		});
+		
+		ktCompanySuspension = function(){
+			event.preventDefault();
+			
+			$("#divKtCompanySuspension").modal({backdrop: 'static'});	
+		} 
+		ktCompanySuspensionCloese = function(){
+			jQuery('#divKtCompanySuspension').modal('hide')
+			location.href="/loginForm.do";
+		} 
+		
+		logoImageError = function(img) {
+			$(img).replaceWith('<span class="logo">KT bizmeka EZ</span>');
+		};
+		
+		
+		goBanner = function(url){
+			$("#bannerUrl").val(url);
+			var name = $.trim($("#username").val());
+			var password = $("#password").val();
+			
+			if(name == "") {
+				alert("로그인 후 이동할 수 있습니다.\n아아디를 입력 후 B2B마케팅 무료 특강을 클릭해주세요.");
+				$("#username").focus();
+				return false;
+			}
+			
+			if(password == "") {
+				alert("로그인 후 이동할 수 있습니다.\n비밀번호를 입력 후 B2B마케팅 무료 특강을 클릭해주세요.");
+				$("#password").focus();
+				return false;
+			}
+			//인증번호로그인 체크 확인
+			if($("input[name='loginType']:checked").val() == "captchLogin"){
+				var $input = $("input[name=answerData]").val();
+				var captcha = $("#answerData").get(0).Captcha;
+				if($input.length == 6) {
+					var obj_data = new Object();
+					obj_data.answerData = $("input[name=answerData]").val();
+					obj_data.captchaId = captcha.Id;
+					obj_data.instanceId = captcha.InstanceId;
+				
+					$.ajax({
+		 				url : "/loginIsCaptcha.do",
+		 				data: obj_data,
+		 				type : "post",
+		 				success : function(result){
+		 					if(result == "FAIL") {
+		 						alert("캡차 번호가 맞지 않습니다.\n다시 입력해 주세요.");
+		 						$("#answerData").get(0).Captcha.ReloadImage();
+		 						return;
+		 					}else{
+		 						$("input[name=captchaInput]", $sendForm).val($("#answerData").val());
+		 						sendFormSubmit();	
+		 					}
+		 				},
+		 				error : function(xhr){
+		 					alert("이용에 불편을 드려 죄송합니다.");	
+		 				}
+		 			});
+				} else {
+					alert("로그인 후 이동할 수 있습니다.\n보안문자 6자리를 입력 후 신청하기를 클릭해주세요.");
+					$("#answerData").focus();
+					return false;
+				}
+			}else{
+				sendFormSubmit();
+			}
+		}
+		
+		
+
+	})(jQuery);
+	
+	function openLoginSettingGuide() {
+		spro.popupOpen('https://ezportal.bizmeka.com/html/userTipNew/index.html?page=html/po-docs/po_22.html',{width:1300, height:720});
+	}
+	
+
+	function newWindowOpen(url){
+		window.open(url, "_blank");
+	}
+	</script>
+</head>
+<body class="login-main v1" data-page="methods">
+<div id="block-login"></div>
+<div id="sidemenu">
+	<h1 class="blind">메뉴영역</h1>
+	<div class="side-bar">
+		<img src="https://ezportal.bizmeka.com/companyImage/T55266/T55266_100_1d1f2dd733f74bd3844a7fd7be76506f.png" onerror="logoImageError(this)"/>
+			</div>
+	<div class="left-banner" data-type="t1" style="top:10px;">
+		<img src="/images/banner/banner_callcenter_login1.png" alt="EZ회원가입 상담">
+	</div>
+	<div class="sub-area">
+		<ul>
+			<li><a href="https://www.bizmeka.com/main/main.do">홈페이지</a></li>	
+			<li><a href="https://www.bizmeka.com/store/main/storemainView.do">서비스스토어<!-- &nbsp;<img src="/images/common/new_ico.png" style="vertical-align:middle;"> --></a></li>	
+		</ul>
+	</div>
+</div>
+
+<!-- //pagination -->
+<div id="login-container" class="login-new">
+	<form id="loginSendForm" action="/login.do" method="post" onsubmit="return goLogin()">
+		<input type="hidden" name="j_password" id="j_password" />
+		<input type="hidden" name="j_username" id="j_username" />
+		<input type="hidden" name="messageId" id="messageId" value="" />
+		<input type="hidden" name="bannerUrl" id="bannerUrl" />
+		<input type="hidden" name="captchaInput" />
+	</form>	
+	<div class="login-form" style="border-radius: 12px 12px 0px 0px; box-shadow:none;">
+		<h2 id="companyName"></h2>
+		<div class="form-area">
+			<form id="loginForm" action="" method="post">
+				<input type="hidden" id="sproKeyModulus" value="d68f9230e25a1e4d24d557fbaabd1fdcef602de58606edbb1fe6c3a93a6eccf4f56ab0be766ae3665178b2c6cef01103b9188c953ae207838bc48543f58645a7514db65e7a45348ccab9e4578bed4a9205053079c71cf1ff0426f326c5a19fe7c18beaedce2b78869db363043d8d89fd42d0f8c64c7a077473710f1d8d342dd6345a5c57fd67ed3cdbdd87f8c4912dc5240aab2b46ccc9ef8512cdda7532c5963af02209b41df50d40f06a6eedf96cc203d12996d98ca387280981d7d68f631b6a2d628897ef34570c33d5bdce592c68bbd10da37d064e7c71dc6c5ad9f54deac5390e42708b4ca916515e35594dc8117da375bd8f49437a1e805a4be890ea3d" />
+		       	<input type="hidden" id="sproKeyExponent" value="10001" />
+			
+				<div class="input_area">
+					<i class="ico_id"></i>
+					<input type="text" id="username" name="username" class="input-lg w100p" value="" placeholder="아이디 또는 회사 이메일"/>
+				</div>
+				<div class="input_area">
+					<i class="ico_pw"></i>
+					<input type="password" id="password" name="password" class="input-lg w100p" placeholder="Password"/>
+				</div>
+				<div id="capsLockTip" class="bubble" style="display:none;" >Caps Lock 키가 눌려있습니다.</div>
+				<div class="saveid">
+					<input type="checkbox" id="saveID" name="saveID" checked><label for="saveID">아이디저장</label>
+    				<span style="padding: 0 5px;">|</span>
+    				<input type="radio" value="authNumLogin" name="loginType" id="authNumLogin" checked="true" style="margin:0 2px;"><label for="authNumLogin">인증번호</label>
+    				<input type="radio" value="captchLogin" name="loginType" id="captchLogin" style="margin-left:3px;"><label for="captchLogin">캡챠</label>
+<a href="#" id="loginGuide" style="width:73px;">
+						<i class="fa fa-question-circle"></i> 로그인 정책
+					</a>
+				</div>
+				<div id="captchaDiv" style="display:none;" class="join-guide">
+					<div class="t2 mt6">
+						<div class="captchaInput">캡챠(보안문자) 입력하기</div>
+						<div class="reloadText">
+							<a href="#" id="captchaBtnReload">
+								<img src="/images/common/ic_refresh.png" alt="새로고침">새로고침
+							</a>
+						</div>
+					</div>
+					<div class="form-wrap">
+						<div class="captcha-area ty2">
+							<div class="code">
+								
+
+  <link type="text/css" rel="stylesheet" href="/botdetectcaptcha?get=layout-stylesheet" />
+  <div class="BDC_CaptchaDiv " id="botCaptcha_CaptchaDiv" style="width: 320px !important; height: 70px !important; "><!--
+ --><div class="BDC_CaptchaImageDiv" id="botCaptcha_CaptchaImageDiv" style="width: 290px !important; height: 70px !important;"><!--
+   --><img class="BDC_CaptchaImage" id="botCaptcha_CaptchaImage" src="/botdetectcaptcha?get=image&amp;c=botCaptcha&amp;t=df43d2e14c8e44d2971f173298d43977" alt="Retype the CAPTCHA code from the image" /><!--
+ --></div><!--
+ --><div class="BDC_CaptchaIconsDiv" id="botCaptcha_CaptchaIconsDiv" style="width: 24px !important;"><!--
+   --><a class="BDC_ReloadLink" id="botCaptcha_ReloadLink" href="#" title="Change the CAPTCHA code"><img class="BDC_ReloadIcon" id="botCaptcha_ReloadIcon" src="/botdetectcaptcha?get=reload-icon" alt="Change the CAPTCHA code" /></a><!--
+ --></div>
+   <script src="/botdetectcaptcha?get=script-include" type="text/javascript"></script>
+   <script src="/botdetectcaptcha?get=init-script-include&amp;c=botCaptcha&amp;t=df43d2e14c8e44d2971f173298d43977" type="text/javascript"></script>
+   <input type="hidden" id="BDC_VCID_botCaptcha" name="BDC_VCID_botCaptcha" value="df43d2e14c8e44d2971f173298d43977" />
+   <input type="hidden" id="BDC_BackWorkaround_botCaptcha" name="BDC_BackWorkaround_botCaptcha" value="0" />
+  </div>
+</div>
+							<ul class="btn">
+								<li>
+									<a href="#" id="captchaBtnReload2">
+										<img src="/images/common/ic_refresh.png" alt="새로고침"> 새로고침
+									</a>
+								</li>
+								<li>
+									<a href="#" id="captchaBtnSound">
+										<img src="/images/common/ic_voice.png" alt="음성듣기"> 음성듣기
+									</a>
+								</li>
+							</ul>
+							<input class="" type="number" autocomplete="off" id="answerData" name="answerData" value="" placeholder="보안문자 입력" maxlength="6">							
+						</div>
+					</div>
+				</div>
+				<a href="#" id="btnSubmit" class="login-btn">로그인</a>
+			</form>
+			<div class="login-sublink">
+				<a href="https://www.bizmeka.com/find/findIdCertTypeView.do">아이디찾기</a><a href="https://www.bizmeka.com/find/findPasswordCertTypeView.do">비밀번호찾기</a><a href="https://www.bizmeka.com/join/joinAgreeView.do">회원가입</a><a href="/rule/readLoginFailView.do">비밀번호 5회오류</a></div>
+		</div>
+	</div>
+	
+
+	<div class="login-banner">
+		<a href="#" data-role="banner" data-banner-id="SO322400" data-banner-url="https://www.bizmeka.com/html/banner/paidBannerPopup.html?imgId=7" data-banner-option='{"width":790, "height":774}' data-banner-name="premiumServiceTip" style="display: block;"><img src="/images/banner/login_2020_cu2.jpg" alt="" style="width:482px;border-radius: 0 0 10px 10px;"></a> 
+		</div>
+ </div>
+ 
+ <div id="divBannerContent" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="false">
+	<h1 class="blind">축하메세지업</h1>
+	<div class="modal-dialog" style="width:791px;">
+		<div class="modal-content">
+			<div class="line-box web-messenger-wrap">		
+				<a href="#" onclick="jQuery('#divBannerContent').modal('hide')"><i class="icon pop-close"></i><span class="blind">닫기</span></a>
+				<img src="/images/common/img_popup_form_info.png" alt=""/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- site-settings -->
+<div class="site-settings">
+	<div class="site-settings-button animate1 fadeInRight"><span class="fa fa-cog"></span></div>
+	<div class="site-settings-content">
+		<div class="block block-transparent nm">
+			<div class="header top">
+				<h2>Login style</h2>
+			</div>
+			<p class="clearboth"></p>
+			<div class="header">
+				<h2>Backgrounds</h2>
+			</div>
+			<p class="clearboth"></p>
+			<div class="content controls">
+				<div class="form-row">
+					<div class="col-md-12" id="ss_backgrounds">
+					</div>
+				</div>
+				<div style="padding:0 15px;">
+					<a href="#" onclick="openLoginSettingGuide()"><img src="/images/banner/login_banner.png" alt="우리회사 로그인 페이지 설정하기"/></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //site-settings -->
+
+<div id="divLoginGuide" class="modal fade">
+	<div class="modal-dialog" style="width:815px;">
+		<div class="modal-content">
+			<img src="/images/main/login_guide_new.jpg" alt="로그인 정책 안내" usemap="#loginInfo"/>
+			<map name="loginInfo">
+				<area href="#" onclick="jQuery('#divLoginGuide').modal('hide')" shape="rect" coords="763, 30, 793, 60" alt="닫기"/>
+				<area href="#" onclick="spro.popupOpen(spro.getWebAppPath('po') + '/html/userTipNew/index.html?page=html/po-docs/po_27.html',{width:1300, height:720})" shape="rect" coords="578, 565, 770, 600" alt="활용팀 바로가기"/>
+			</map>
+		</div>
+	</div>
+</div>
+
+<div id="divKtCompanySuspension" class="modal fade">
+	<div class="modal-dialog" style="width:510px;">
+		<div class="modal-content">
+			<img src="/images/common/black_kt.jpg" alt="비즈메카ZZ 이용중단 안내" usemap="#ktCompanyInfo"/>
+			<map name="ktCompanyInfo">
+				<area href="#" onclick="ktCompanySuspensionCloese()" shape="rect" coords="461,24,492,53" alt="닫기"/>
+			</map>
+		</div>
+	</div>
+</div>
+
+<div id="footer">
+	<p>Copyright © 2015 kt corp. All rights reserved.</p>
+	<div class="link">
+		<a href="https://www.bizmeka.com/customer/policyView.do?locale=ko">이용약관</a>
+		<a href="https://www.bizmeka.com/customer/policyCustomerView.do?locale=ko">개인정보처리방침</a>
+	</div>
+</div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-101552986-1');
+</script>
+
+<script type="text/java-script">
+ /* <![CDATA[ */
+var google_conversion_id = 944142215;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+
+<noscript>
+	<div style="display:inline;">
+		<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/944142215/?value=0&amp;guid=ON&amp;script=0"/>
+	</div>
+</noscript>
+</body>
+</html>

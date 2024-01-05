@@ -1,0 +1,14 @@
+{
+  "name": "roomchecker",
+  "version": "1.0.0",
+  "description": "Auto crawl KT bizmeka EZ calendar using puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^21.6.1"
+  }
+}

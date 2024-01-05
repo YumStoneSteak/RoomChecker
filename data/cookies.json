@@ -1,0 +1,31 @@
+[
+  {
+    "name": "JSESSIONID",
+    "value": "BBD3D3B696BD4B4FD9CCFF6C8BDDE532.SPRO-PO-WAS3-PO-8102",
+    "domain": "ezportal.bizmeka.com",
+    "path": "/",
+    "expires": -1,
+    "size": 63,
+    "httpOnly": true,
+    "secure": true,
+    "session": true,
+    "sameParty": false,
+    "sourceScheme": "Secure",
+    "sourcePort": 443
+  },
+  {
+    "name": "isLogin",
+    "value": "Y",
+    "domain": ".bizmeka.com",
+    "path": "/",
+    "expires": 1738980801.331709,
+    "size": 8,
+    "httpOnly": false,
+    "secure": true,
+    "session": false,
+    "sameSite": "None",
+    "sameParty": false,
+    "sourceScheme": "Secure",
+    "sourcePort": 443
+  }
+]

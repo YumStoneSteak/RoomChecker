@@ -1,0 +1,562 @@
+var sproLang = {
+	getReplaceText : function(res, data) {
+		var result = res;
+		for(var key in data) {
+			var re = new RegExp("\\$\\{" + key + "\\}", "g");
+			result = result.replace(re, data[key]);
+		}
+		return result;
+	},
+	common : {
+		confirmDelete : "Are you sure to delete?",
+		noData : "No data",
+		pageExitConfirm : "Are you sure you want to leave this page?\n\nYour changes will be lost.",
+		home : "Home"
+	},
+	sort : {
+		asc : "Ascending",
+		desc : "Descending"
+	},
+	uploadControll : {	// file controller
+		btnDelete : "Delete",
+		titDelete : "Delete",
+		chkCopy : "Copy",
+		titCopy : "Copy",
+		lblUploadFile : "File upload",
+		lblAttachFile : "Attach",
+		altRollup : "Roll down",
+		altRolldown : "Roll up",
+		lblFilePerMaxSize : " Max : %w",
+		selectFiles : "Select Files",
+		filter : {txt:"TEXT File", img:"Image File", comp:"Compress File", doc:"Document File", mp:"Music File", vod:"Movie File", app:"Program File", all:"All"},
+		plupload : {
+			initializing : "file controller is being initialized",
+			caption : "Select files to be uploaded",
+			description : "Select files and click  \"Upload\" button.",
+			lblFileName : "File Name",
+			lblStatus : "Status",
+			lblSize : "Size",
+			btnAddFiles : "Add Files",
+			btnStopUpload : "Stop",
+			noticeUploading : '%d/%d files uploading completed',
+			dragComment : "Drag files here.",
+			errExtension : "Invalid file extension",
+			errSize : "File size error :",
+			errInit : "Initialization error.",
+			errHttp : "HTTP error.",
+			errSecurity : "Security error",
+			btnStartUpload: "Start Upload"
+		},
+		errZeroSize : "Among the selected files is a file whose size is 0.\n\nPlease delete the file.",
+		errTotalSizeOver : "The total size allowed for uploading is %w.",
+		errMaxFileSize : "Max file size : %w",
+		errImageFile : "Image file error.\n\nPlease select a different image file.",
+		errGeneric : "File upload error",
+		lblNoAttachment : "No Attachment"
+	},
+	datepicker : {	// jquery ui datepicker
+		langCode : "en",
+		btnClose : "Close",
+		btnPrev : "Prev",
+		btnNext : "Next",
+		btnCurrentDate : "Today",
+		lblMonthNames : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+		lblMonthNamesShort : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+		lblDayNames : ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+		lblDayNamesShort: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+		lblDayNamesMin: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+		lblYear : ""
+	},
+	userContextMenu : {
+		close : "Close",
+		profile : "Profile",
+		sms : "SMS",
+		message : "Message",
+		blog : "Blog"
+	},
+	tagging : {	// jquery ui tagging
+		required : "Please enter your tag",
+		maxlength:"Up to 100 characters can be entered",
+		tagCount:"Up to 10 tags can be registered",
+		tagDuplicate:"Duplicate tag.",
+		tagNotice:"Please enter your tag.",
+		save:"Save",
+		cancel:"Cancel",
+		edit:"Edit",
+		editBtn:"ic_edit",
+		tagWord:"Only alphabets, numbers, commas and spaces are allowed.",
+		addTag : "Add a tag"
+	},
+	sms : {
+		monthSmsCount : "Exceeded the monthly SMS quota. The maximum number of outgoing SMS per month is 100 msgs. Please check and try again.",
+		sendSuccess : "Text message sent successfully."		
+	},
+	searchUserGroup : {
+		duplicateUser : "Duplicate user",
+		duplicateGroup : "Duplicate group"
+	},
+	favorite : {
+		addFavorite : "Do you want to add it to your Favorites?",
+		deleteFavorite : "Do you want to remove it from your Favorites?",
+		emptyFavoriteCategory : "No favorites category.\nPlease set category."
+	},
+	meetingroom : {
+		btnText: {
+			save: "Save"
+		},
+		labelText: {
+			daily: "Daily",
+			weekly: "Weekly",
+			monthly: "Monthly",
+			yearly: "Yearly",
+			month: "Month",
+			date_1: "Date",
+			dow: "Day",
+			last: "Last",
+			lastDate: "Last date",
+			nth: "%d(th)",
+			am: "AM",
+			pm: "PM",
+			schedule: "Schedule",
+			emptySchedule: "No schedules.",
+			alarmTypes: ["Mail", "SMS", "Msg"],
+			repeatTypes: ['Day(s)', 'Week(s)', 'Month(s)', 'Year(s)'],
+			repeatSchedule: "Recurring Event",
+			open: "Public",
+			noopen: "Private",
+			every: "Always",
+			unit: "Every",
+			from: "From",
+			untilRepeat: "Repeats until",
+			forever: "Forever",
+			beforeMin: "min. ago",
+			unknown: "To be determined",
+			attendance: "Join",
+			noattendance: "Absent",
+			allday: "All day",
+			holiday: "Holiday",
+			date: "Date",
+			add: "Add",
+			period: "Period",
+			title: "Title",
+			allDayFull: "All day",
+			notAllDayFull: "Non-all day",
+			CAT: "Category",
+			totalCountDesc: "Total {} person(s)",
+			reason : "Reason",
+			total : "Total",
+			titleSelectTime : "Select the time"
+		},
+		messageText : {
+			inputTitle: "Enter a title.",
+			inputCycle: "Please enter a recurring cycle.",
+			inputCycleDigits: "Only numbers are allowed.",
+			doSendMail: "Do you want to send an e-mail to attendees and CC recipients?",
+			noAddOwnerToParticipant: "A user who registered the event cannot be specified as participant/CC recipient",
+			noUser: "No users",
+			noResult: "No results found",
+			maxTitle: "Up to 300 characters can be entered for title.",
+			checkTimePick: "Reservation start time must be earlier than end time.",
+			noReservePastDate: "You cannot reserve a conference room for a date in the past.",
+			noReservePastTime: "You cannot reserve a conference room for the time in the past.",
+			noReserveReadyTime : "Reservations must be made at least %w minutes in advance.",
+			duplicateReserve: "Includes the time already reserved.",
+			availableReserve : "Reservation is available.",
+			checkEndTime : "You have selected the end time earlier than the start time."
+		}
+	},
+	facility : {
+		messageText : {
+			searchFacility : "Please enter a facility name.",
+			confirmEmptyApply : "No facility to be applied.\n\nDo you want to proceed?",
+			selectMeetingRoom : "Please select a meeting room.",
+			emptyMeetingRoom : "Not selected rooms.",
+			consecutiveHours : "That you want to reserve time to time must be consecutive."
+		},
+		label : {
+			year : ".",
+			month : ".",
+			day : ".",
+			capacity : "%d people",
+			videoconferenceYes : "available",
+			videoconferenceNo : "not",
+			approvalYes : "want",
+			approvalNo : "unnecessary",
+			noImage : "no image",
+			approvalWait : "Waiting for approval",
+			approvalPass : "OK",
+			approvalReject : "Reject"
+		},
+		checkMessage : {
+			usage : "Facility \"#{facilityName}\" is not available.",
+			allowRepeat : "Repeated use of the facility \"#{facilityName}\" is not allowed.",
+			maxReservation : "Reservation for facility \"#{facilityName}\" can be made up to #{maxReservation} month(s) in advance.",
+			maxPerReservation : "Facility \"#{facilityName}\ can be reserved for up to #{maxPerReservation} hour(s).",
+			avaliableTime : "Facility #{maxPerReservation} is available for reservation from #{avaliableStartTime} to #{avaliableEndTime} during the day."
+		}
+	},
+	planner: { // Planner
+		buttonText: {  // Only for fullCalendar 
+			pprev: "First",
+			prev: "Previous",
+			next: "Next",
+			nnext: "Last",
+			prevYear: "&nbsp;&lt;&lt;&nbsp;",
+			nextYear: "&nbsp;&gt;&gt;&nbsp;",
+			today: "Today",
+			month: "Monthly",
+			week: "Weekly",
+			day: "Daily",
+			listMonth: "List",
+			teamDay : "Team Daily",
+			teamWeek: "Team Weekly",
+			searchList : "Search",
+			navigation : {
+				monthly : {
+					pprev : "Previous years",
+					prev : "Previous month",
+					next : "Next month",
+					nnext : "Next year",
+					curr : "Today"
+				},
+				daily : {
+					pprev : "Previous week",
+					prev : "Previous day",
+					next : "Next day",
+					nnext : "Next week",
+					curr : "Today"
+				}
+			}
+		},			
+		titleFormat: {	// Only for fullCalendar
+			month: 'yyyy.MM',
+			week: "yyyy.MM.dd{ ~ MM.dd [yyyy]}",
+			day: "yyyy.MM.dd ddd."
+		},		
+		columnFormat: {	// Only for fullCalendar 
+			month: 'ddd',
+			week: "'<span class=num>'dd'</span>' ddd",
+			day: "'<span class=num>'MM.dd'</span>' ddd"
+		},		
+		btnText: {
+			update: "Edit",
+			save: "Save",
+			remove: "Delete",
+			scheduleList: "List",
+			ok: "OK",
+			cancel: "Cancel",
+			viewReason : "View Reason",
+			search : "Search",
+			address : "Address",
+			chooseUser : "Organization Chart",
+			chooseFacility : "Facility",
+			choosePersonalGroup : "Personal Group",
+			participate : "Participate",
+			decision : "Confirmed",
+			findTime : "Find Time",
+			resetBasicInfo : "Reset Basic Information",
+			seeFold : "See fold",
+			seeAll : "View all",
+			select : " select"
+		},
+		labelText: {
+			daily: "Daily",
+			weekly: "Weekly",
+			monthly: "Monthly",
+			yearly: "Yearly",
+			month: "Month",
+			date_1: "Date",
+			monthDate : "${month}month ${date}date",
+			dow: "Day",
+			last: "Last",
+			lastDate: "Last date",
+			nth: "%d(th)",
+			awith:"",
+			am: "AM",
+			pm: "PM",
+			schedule: "Schedule",
+			emptySchedule: "No schedules.",
+			alarmTypes: ["Mail", "SMS", "Msg"],
+			repeatTypes: ['Day(s)', 'Week(s)', 'Month(s)', 'Year(s)'],
+			repeatSchedule: "Recurring Event",
+			open: "Public",
+			noopen: "Private",
+			every: "Always",
+			unit: "Every",
+			from: "From",
+			untilRepeat: "Repeats until",
+			forever: "Forever",
+			beforeMin: "%d minutes ago",	//min. before
+			beforeHour: "%d hour ago",
+			beforeDay: "%d day ago",
+			unknown: "To be determined",
+			attendance: "Join",
+			noattendance: "Absent",
+			allday: "All day",
+			holiday: "Holiday",
+			date: "Date",
+			add: "Add",
+			period: "Period",
+			title: "Title",
+			allDayFull: "All day",
+			todo: "ToDo",
+			notAllDayFull: "Non-all day",
+			CAT: "Category",
+			totalCountDesc: "Total {} person(s)",
+			reason : "Reason",
+			total : "Total",
+			post : "Posted by",
+			participant : "Participants",
+			shareUser : "Participants",
+			referenceUser : "CC",
+			facility : "Facility",
+			user : "User",
+			resource : "User/Facility",
+			chooseUserAndFacility : "Selected users and facility",
+			unknownStatus : "N/A",
+			empty : "None",
+			noupdateScheduleTime : "* The schedule time cannot be edited.",
+			noupdateFacility : "* Facility cannot be edited.",
+			noupdateParticipant : "* Participants cannot be edited.",
+			noupdateScheduleTime : "* Select the time the target can not be modified in any way.",
+			noupdateFacility : "* Facility can not be modified.",
+			noupdateParticipant : "* Participants can not be modified.",
+			orgGroup : "Team",
+			personalGroup : "Personal",
+			possibleTime : "Possible time",
+			selectTime : "Time selection",
+			place : "Place",
+			etcParticipant : " %d others",
+			etcFacility : " %d others",
+			register : "Registration",
+			updater : "Modified"
+		},
+		titleText: {
+			checkParticipant: "Check Participant Schedule",
+			emptySchedule: "No Schedule",
+			emptyTodaySchedule: "No schedules for today",
+			mySchedule: "My Schedules",
+			mandatorSchedule: "Delegator's Schedule",
+			teamSchedule: "Team Schedule",
+			userSchedule: "Individual User's Schedule",
+			privateSchedule: "Private Schedule",
+			memberSchedule: "Members' Schedule",
+			viewDetailEvent: "View Event Details",
+			noattendanceTitle: "Enter Reason for Absence",
+			meetingRoomReserve: "Reserve Conference Room",
+			facilityChoose: "Select conference room",
+			facilityInfo: "Conference Room Infomation",
+			facilityReserve : "Conference Room Reserve Views",
+			userScheduleAndMeetingRoom : "Choose the room and participants schedule confirmed",
+			simpleMeetingroomReserve : "Easy booking rooms"
+		},
+		messageText: {
+			inputTitle: "Enter a title.",
+			inputAlarm: "Select a reminder.",
+			inputCycle: "Please enter a recurring cycle.",
+			inputCyclerange: "Can only enter from 1 to 100.",
+			doSendMail: "Do you want to send an e-mail to the participants and CC recipients?",
+			checkTrustee: "Check the delegatee name",
+			emptySchedule: "No schedules.",
+			emptyTodaySchedule: "No schedules for today",			
+			showDetail: "View Event Details",
+			noUser: "No user",
+			noResult: "No results found",
+			selectHoliday: "Select a holiday to be deleted.",
+			confirmDeleteHoliday: "Are you sure to delete the holiday?",
+			selectCategory: "Select a category to be deleted.",
+			confirmDeleteCategory: "Events registered under the deleted category will be moved to the Work category",
+			confirmDeleteSchedule: "Are you sure to delete the selected event?",
+			clickSearchMessage: "Click the Search button after selecting users in Addressbook.",
+			maxTitle: "Up to 300 characters can be entered for title.",
+			checkRepeatDay: "Please select a day of the week for recurring event.",
+			confirmDeleteMantator: "Are you sure to delete the delegatee?",
+			noAddOwnerToParticipant: "A user who registered the event cannot be specified as participant/CC recipient",
+			repeatUpdateDialogTitle : "Edit Recurring Event",
+			repeatUpdateOptionSelect : "Select a recurrence option.",
+			repeatDeletDialogTitle : "Delete Recurring Event",
+			repeatDeleteOptionSelect : "Select a deletion option.",
+			repeatUpdateConfirm : "Are you sure you want to edit the recurring event?",
+			unfixedUpdateConfirm : "Do you want to edit the unconfirmed event?",
+			checkEndTime : "You have selected the end time earlier than the start time.",
+			inputSearchWord : "Please enter a search word.",
+			confirmSave : "Do you want to save it?",
+			selectSearchField : "Please select at least one search item.",
+			selectDate : "Please select a date.",
+			unableTime : "Cannot select the time.",
+			unsupportedFacilitySearch : "Facility has not been searched.\nPlease a user.",
+			unsupportedWorkspaceSearch : "Workspace group has not been searched.\nPlease select a user.",
+			decisionScheduleTime : "Do you want to confirm the event at the selected time?",
+			confirmScheduleTime : "Do you want to confirm the event at the selected time?",
+			confirmDeleteTime : "Are you sure you want to delete the time?",
+			confirmDeleteTimeWithSchedule : "If you delete the time, the event will be deleted as well.\n\nAre you sure to delete the event?",
+			saved : "Saved successfully",
+			selectTime : "Select a time.",
+			basicSettingWithFindTime : "Set the basic information and the available time.",
+			notfoundReserveTime : "There is no time lot available for reservation.",
+			selectParticipant : "Please specify the participants.",
+			selectScheduleTerm : "Please plan term select",
+			hasWrokspaceMemember : "Workspace members can not be set as participate / see.",
+			notRecentRoom : "No recent conference book.",
+			meetingroomReserved : "Has been scheduled.",
+			confirmReserve : "Do you want to book?",
+			selectReserveTime : "Select the time to select the meeting room reservation please.",
+			plannerNoPermission : "Views can not register.",
+			plannerDelete : "Schedule is deleted.",
+			plannerUnreadable : "You do not have permission.",
+			alarmDuple : "Duplicate notification settings.",
+			AbsentReasonMaxLength:"Enter %d characters or less.",
+			repeatScheduleRequired : "Please select the repeat end date.",
+			repeatEndDate : "Please type the date in the format.",
+			repeatDateGT : "Repeat schedule end date must be greater than the start date.",
+			emptyParticipant : "Please select one or more participants.",
+			participantNoDelete : "Can not be deleted.",
+			emptyParticipantDelete : "참가자가 없는 일정은 삭제되어야 합니다.\n등록자에게 본 일정의 삭제를 요청하세요.",
+			showRegisterInfo : "Do you want to check registrant information?",
+			scheduleDeleteWithLastParticipant : "If delete all the participants, the schedule will be deleted.",
+			deleteTargetSelect : "Please select the destination to delete",
+			confirmDeleteParticipant : "Are you sure you want to delete this schedule specifies the participants?",
+			confirmAppendParticipant : "Would you like to participate in this schedule?",
+			noMailId : "No e-mail ID.",
+			outlookImportErr : "Failed to import Outlook/Mobile schedule. Ask to system admin.",
+			confirmOutlookImport : "Want to import Outlook/Mobile schedule?",
+			outlookImportSaved : "Outlook/Mobile schedule imported successfully.",
+			emptyEmail : "Must be the e-mail address of the personal information, you can send e-mail.",
+			invalidEmail : "Incorrect e-mail address of the personal information."
+		},
+		errorText: {
+			unknowError: "Unknown error.",
+			failUpload: "File upload failed.",
+			duplicateName: "The same holiday name has already been registered for the country.",
+			duplicateCategoryName: "The same category name has already been registered.",
+			eventDeleted : "Already deleted.",
+			meetingRoomDuplicate : "The selected conference room has already been booked.\n\nPlease select a different time slot or another room.",
+			unusefulTime : "The facility is not available at the selected time.",
+			systemErrorWithRetry : "Failed to save the data due to system failure.\n\nPlease try again",
+			facilityReserveDuplicate : "The scheduled time of the facility equipment is overlapped and cannot be changed."
+		}
+	},
+	conferenceText : {
+		confirerenceSave : "Registration proceedings to modify the schedule, can not be deleted. \n Would you like to save?"
+	  , conferenceContents : "Please fill out the minutes."
+	  , conferenceSaveError : "Registration error"
+	  , weekSchedule : "Weekly Schedule"
+	  , monthSchedule : "Monthly Calendar"
+	  , simplePlan : "Simple Plan"
+	  , searchOther : "Search Other's Calendar"
+	  , daySchedule : "Daily Schedule"
+	  , Importance: "Importance"
+	  ,limits: "Equipment is limited."
+	  ,diffDate: "If you do not have all-day appointment, you can not specify a start and end time."
+	  ,resize: "Window size is changed to optimize print size."
+	  ,printView: "View Print"
+	  ,print: "Print"
+	  ,apprWaiting: "Approval pending"
+	  ,booked: "Reservation completion"
+		,addFavorite:"[Planner]Are you sure to add to favorites?"
+		,deleteFavorite:"[Planner]Are you sure to remove to favorites?"
+		, textCol:"Text Color"
+		, notDataFavorite:"There are no users who are favorite."
+		, rongStartType:"Is not in the correct format of the start time. ex) 06:05"
+		, rongendType:"Is not in the correct format of end time. ex) 06:05"
+		, copyMySchedule:"It has been copied to my schedule."
+		, fontSizeBig:"Large text size"
+		, fontSizeSmall:"I want to reduce the font size"
+		, topFontSizeBig:"It is the largest font."
+		, topFontSizeSmall:"Is the smallest font."
+		, createdFavorite:"I was registered in the Favorite."
+		, deletedFavorite:"Favorite of information has been removed."
+		, onlySixMonths:"It is only six months maximum."
+		, printTitle:"Calendar Printing"
+		, printConfirm:"Please set next to Page Setup. Do you want to print?"
+		, onlyOneYear:"Available for up to one year."
+		, alertReapeatUpdate:"The recurring appointment, please change the calendar."
+		, loading : "Loading. Please wait a moment."
+		, confirerenceDuplicate : "Minutes are already registered."
+		, fileuploadTitleForEditor : "Image file upload"
+	},
+	mainPortlet : {	//portlet
+		more : "More",
+		config : "Config",
+		reload : "Refresh",
+		maximize : "Maximize",
+		minimize : "Minimize",
+		restore : "Restore",
+		help : "Help",
+		close : "Close",
+		titHelpPopup : " Help",
+		configSuccessMessage : "Configured successfully.",
+		configFailMessage : "Failed to configure.",
+		confirmRemoveMessage : "Are you sure to delete?",
+		personalPortletMessage : "You may not post personal portlet in the public area.",
+		publicPortletMessage : "You may not post public portlet in the personal area.",
+		noPage : "Cannot display the page.",
+		noConfig : "After saving the setting mode are also available."
+	},
+	commonPortlet : {
+		plan : {title:"Weekly Plan", button:"Plan"},
+		work : {title:"My Work", button:"Work"}
+	},
+	presence : {
+		popupTitle : "Presence Information"
+	},
+	clock : {
+		sDayName : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		fDayName : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		sMonthName : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		fMonthName : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		am : "AM",
+		pm : "PM",
+		AM : "AM",
+		PM : "PM",
+		subscriptYear : "",
+		subscriptMonth : "",
+		subscriptDay : ""
+	},
+	gallery : {
+		imgCount : "Image #{cur} of #{tot}",
+		next : "Next",
+		prev : "Previous",
+		loadError : "The image Could not be loaded."
+	},
+	ieCheck : {
+		msgCompatible :  "If \"compatibility view\" in the browser is enabled, some features may not work correctly.<br/>Please set the browser mode as IE8 or higher, not compatibility view.<br/>[<a href=\"#{compatibleUrl}\" traget=\"_blank\">Find out how to set up</a>]",
+		msgUpgrade : "If you wish to use the Internet Explorer browser, make sure to use version 8 or higher.<br/>[<a href=\"#{upgradeUrl}\" traget=\"_blank\">Upgrade</a>]<br/>If you already use IE8 or higher, the browser mode and the document mode in the development tool must be IE8 or higher.<br/>[<a href=\"#{modeUrl}\" traget=\"_blank\">Find out how to set up</a>]"
+	},
+	fileupload : {
+		file : "File Upload",
+		image : "Image Upload"		
+	},
+	leftmenu : {
+		show : "Show the left menus",
+		hide : "Hide the left menus"
+	},
+	topmenu : {
+		min : "Minimize the top menus",
+		max : "Maximize the top menus"
+	},
+	item : {
+		linereplyItemContentNotNull : "Add a comment.",
+		linereplyItemContentSize : "Comment must be between 1 ~ 1000 characters.",
+		confirmLinereplyDelete : "Are you sure to delete?"
+	},
+	appr : {
+		onlyOnePerson : "승인(1명)/결재는 1명만 선택하실수 있습니다.",
+		oneApproval : "Approval(one approver)",
+		agree : "Approval(all approvers)",
+		choiceAgree : "Approval(one or more approvers)",
+		appr : "Approval",
+		acknowledgment : "Acknowledgment",
+		all : "(all approvers)",
+		choiceAgree1 : "(one or more approvers)",
+		dependence : "Pending",
+		progress : "In progress",
+		approval : "Approval",
+		companion : "Rejected",
+		agreement : "Agreement",
+		register : "Approval request",
+		search : "Search",
+		address : "Address",
+		del : "Delete"
+	}
+};

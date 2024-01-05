@@ -1,0 +1,1400 @@
+var setCompanyEventSource;
+var setTodoEventSource;
+var setDatepickerVal;
+(function($) {
+	var fc = $.fullCalendar;
+	
+	$.fullCalendar.sourceNormalizers.push(function(sourceOptions) {
+		if (sourceOptions.dataType == 'ikep4' || sourceOptions.dataType === undefined) {
+			sourceOptions.dataType = 'ikep4';
+		}
+	});
+	
+	$.fullCalendar.sourceFetchers.push(function(sourceOptions, start, end) {
+		if (sourceOptions.dataType == 'ikep4') {
+			var success = sourceOptions.success;
+			var dataParams = $.extend({}, sourceOptions.data || {}, {
+				startDate: +start,
+				endDate  : +end
+			});
+
+			return $.extend({}, sourceOptions, {
+				url: sourceOptions.url,
+				dataType: 'json',
+				contentType: "application/json; charset=utf-8",
+				data: dataParams,
+				startParam: false,
+				endParam: false,
+				success: function(data) {
+					var uinfo = data.userInfo || data.mandatorInfo || {};
+					var events = [];
+		
+					if (data.events) {
+						$.each(data.events, function(i, item) {
+							events.push($.fullCalendar.createEvent(item, sourceOptions.name));
+						});
+					}
+					var args = [uinfo,events].concat(Array.prototype.slice.call(arguments, 1));
+					var res = $.fullCalendar.applyAll(success, this, args);
+					if ($.isArray(res)) {
+						return res;
+					}
+					return events;
+				}
+			});
+		}
+	});
+	
+	$.fullCalendar.createEvent = function(item, optionName) {
+		var sd = item.startDate || item.start;
+		var ed = item.endDate || item.end;
+		var styles = eventStyle[item.icon];
+		//var stylesMonth = eventStyleMonth[item.icon];
+	
+		var start = spro.toDate(sd);
+		var end = ed ? spro.toDate(ed) : null;
+		var editable = item.editable;
+		var viewable = item.viewable;
+
+		var title = (editable || viewable) || (optionName === "holiday") ? 
+				item.title : sproLang.planner.titleText.privateSchedule;
+		var categoryName = item.color;
+		var backgroundColor, borderColor, textColor;
+		//var backgroundColorMonth, borderColorMonth;
+	
+		if(styles) {						
+			backgroundColor = styles.background_color;
+			borderColor = styles.border;
+			textColor = styles.color;
+		}
+		
+		/*
+		if(stylesMonth) {						
+			backgroundColorMonth = stylesMonth.background_color;
+			borderColorMonth = stylesMonth.border;
+		}
+			*/
+		if(item.wholeday) {	// 종일 일정인 경우 당일 24시로 하기 위해서...
+			var tmpEnd = moment(end).add("day", 1);
+			end = tmpEnd.toDate();
+		}
+		
+		return {
+			id: item.scheduleId,
+			title: title,
+			start: $.fullCalendar.moment(start),
+			end: $.fullCalendar.moment(end),
+			allDay: item.wholeday,
+			sco: item,
+			editable: editable, 
+			viewable: viewable,
+			isPrivate: item.schedulePublic,
+			categoryName: categoryName,
+			backgroundColor: backgroundColor,
+			borderColor: borderColor,
+		//	backgroundColorMonth: backgroundColorMonth,
+		//	borderColorMonth: borderColorMonth,
+			textColor: textColor,
+			icon:item.icon
+		};
+	};
+
+	var eventSources = {
+		myCalendar: {
+			url: spro.getContextRoot() +"/groupware/planner/calFeedMySchedule.do",
+			name: "myCalendar",
+			editable: true,
+			success: function(uinfo) {
+				//console.log(uinfo);
+			}
+		},
+		company: {
+			url: spro.getContextRoot() +"/groupware/planner/calFeedCompanySchedule.do",
+			name: "company",
+			editable: false
+		},
+		team: {
+			url: spro.getContextRoot() +"/groupware/planner/calFeedTeamSchedule.do",
+			name: "team",
+			editable: false
+		},
+		todo : {
+			url: spro.getContextRoot() +"/groupware/planner/calFeedTodo.do",
+			name: "todo",
+			editable: false
+		},
+		holiday: {
+			url:spro.getContextRoot() +"/groupware/planner/calFeedHoliday.do", 
+			editable: false, 
+			name: "holiday", 
+			allDayDefault: true,
+			color: 'transparent', 
+			textColor: 'red'
+		},
+		targetUser: {
+			url: spro.getContextRoot() +"/groupware/planner/calFeedTargetSchedule.do",
+			name: "targetUser", 
+			success: function(uinfo) {
+				//console.log(uinfo);
+			}
+		},
+		targetGroup: {
+			url: spro.getContextRoot() +"/groupware/planner/calendar/calFeedTargetGroupSchedule.do",
+			name: "targetGroup", 
+			success: function(targetInfo) {
+				//console.log(targetInfo);
+			}
+		},
+		workspace: {
+			url: spro.getContextRoot() +"/groupware/planner/calFeedWorkspaceSchedule.do",
+			name: "workspace", 
+			success: function() {
+				
+			}
+		},
+/*		mandator: {
+			url:spro.getContextRoot() + "/groupware/planner/calendar/calFeedByTrustee.do",
+			editable: true, 
+			name: "mandator", 
+			success: function(uinfo) {
+				//console.log(uinfo);
+			}
+		},
+*/		search: {
+			name: "search"
+		},
+		teamDay: {name:"teamDay"},
+		facilityReserve : {
+			url: spro.getContextRoot() + "/groupware/planner/calFeedTargetSchedule.do",
+			name: "facilityReserve", 
+			success: function(facilityInfo) {
+				var facilityTitle = '<strong>' + (facilityInfo.facilityName||"") + '</strong> ' ;
+				$(".ic_planner_view").hide();
+			}
+		}
+	};
+	
+	
+	var today = spro.getCurTime(),
+		currentEventSources = [],
+		lastView;	// list view mode 체크를 위해
+	
+	var $calendar, $viewCalendar,
+		$viewQuickSchedule, $viewSchedule,
+		$createQuickSchedule, $createSchedule;
+	
+	$(function() {
+		$calendar = $("#calendar");
+		$viewCalendar = $("#main-container").children("div:first");
+		
+		// calendar event bind
+		$calendar.on("onInitial", function() {
+			currentEventSources.push(eventSources.holiday);
+		})
+		.on("onClickMyCalendar", function(e, data) {	// 나의 일정
+			$calendar.fullCalendar("removeEvents");
+			eventSources.team.data = {groupId:null};
+			var sources = [eventSources.holiday, eventSources.myCalendar];	//, eventSources.todo
+//			sources.push(eventSources.company);	// 회사 일정 조회
+			$("#checkCompanySchedule").closest("div").show();
+			$("#btnGroupSchedule").hide();
+			
+			resetEventSource(sources);
+		})
+		.on("onClickUserCalendar", function(e, userId) {	//타인일정 조회
+			if(userId == "") {	// 선택한 사용자가 본인이면...
+				$(this).trigger("onClickMyCalendar");
+			} else {
+				eventSources.targetUser.data = {targetId:userId, targetType:"user"};
+				eventSources.team.data = {userId:userId};
+				$calendar.fullCalendar("removeEvents");
+				$("#checkCompanySchedule").closest("div").show();
+				$("#btnGroupSchedule").hide();
+				
+				resetEventSource([eventSources.holiday, eventSources.targetUser]);
+			}
+		})
+		.on("onClickGroupCalendar", function(e, groupId, type) {	//그룹일정 조회
+			eventSources.targetGroup.data = {targetId:groupId, targetType:type};
+			if(type != 'personalGroup')eventSources.team.data = {groupId:groupId};
+			else eventSources.team.data = {groupId:null};
+			$calendar.fullCalendar("removeEvents");
+			$("#checkCompanySchedule").closest("div").show();
+			$("#btnGroupSchedule").show();
+			
+			resetEventSource([eventSources.holiday, eventSources.targetGroup]);
+		})
+		.on("onClickCompanyCalendar", function(e, data) {	// 전사 일정
+			$calendar.fullCalendar("removeEvents");
+			$("#checkCompanySchedule").closest("div").hide();
+			$("#btnGroupSchedule").hide();
+			
+			resetEventSource([eventSources.holiday, eventSources.company]);
+		})
+		.on("onFacilityReserve", function(e, facilityId) {
+			eventSources.facilityReserve.data = {targetId:facilityId, targetType:"facility"};
+			$("#checkCompanySchedule").closest("div").hide();
+			$("#btnGroupSchedule").hide();
+			
+			resetEventSource([eventSources.holiday, eventSources.facilityReserve]);
+		})
+		.on("onClickWorkspace", function(e, data) {
+			eventSources.workspace.data = {workspaceId:data.workspaceId, isTeam:false};
+			
+			var sources = [eventSources.holiday, eventSources.workspace];
+			resetEventSource(sources);
+		})
+/*		.on("onSelectedTarget", function(e, targetInfo) {
+			$(this).trigger("onActiveView");
+			
+			var view = $calendar.fullCalendar("getView");
+			if($.isArray(targetInfo)) {	// 선택한 사용자 및 설비의 일정 보기
+				if(view.name != "teamDay" && view.name != "teamWeek") {
+//					$calendar.fullCalendar("removeEventSource");
+					view.calendar.changeView("teamWeek");
+				}
+
+				$calendar.trigger("onClickTeamCalendar");
+			} else {	// 팀, 사용자, 설비, 설비 카테고리, 개인그룹 일정 보기
+				var info = {targetId: targetInfo.id||targetInfo.code, targetType:targetInfo.type};
+				switch(targetInfo.type) {
+					case "user" :
+					case "facility" :
+						if(view.name != "agendaDay" && view.name != "agendaWeek" && view.name != "month") {
+							//$calendar.fullCalendar("removeEventSource");
+							//$calendar.fullCalendar("changeView", "agendaWeek");
+							//view.calendar.changeView("agendaWeek");
+							view.calendar.changeView(getDefaultViewMode());
+						}
+						
+						if(info.targetId == owner.userId) {
+							$calendar.trigger("onClickMyCalendar");
+						} else {
+							if(targetInfo.type == "facility") info.targetName = targetInfo.name;
+							$calendar.trigger("onClickUserCalendar", info);
+						}
+						break;
+					case "group" :
+					case "personalGroup" :
+					case "facilityCategory" :
+						if(view.name != "teamDay" && view.name != "teamWeek") {
+//							$calendar.fullCalendar("removeEventSource");
+							//$calendar.fullCalendar("changeView", "teamWeek");
+							view.calendar.changeView("teamWeek");
+						}
+						$.cookie("sdTargetGroupInfo", JSON.stringify(info));
+						$calendar.trigger("onClickTeamCalendar", info);
+						break;
+				}
+			}
+		})*/;		
+
+		// view interface events ------------------------------------------------------------------------------------------------------------
+		$calendar.on("calendar:refetch", function(event, schedule) {
+			$viewCalendar.show();
+			var view = $calendar.fullCalendar("getView");
+			if(view.name == "listView") view.refetchEvents();
+			else $calendar.fullCalendar("refetchEvents");
+		}).on("calendar:active", function(event, viewMode) {
+			$viewCalendar.show();
+//			$calendar.fullCalendar("refetchEvents");
+		}).on("calendar:viewSchedule", function(event, scheduleId) {	// 일정 상세 조회
+			if(!$viewSchedule) {
+				$viewCalendar.loading();
+				$.ajax({
+					async : false,
+					url : "viewSchedule.do",
+					success : function(design) {
+						$viewSchedule = $(design).appendTo("#main-container").filter("div:first");
+						setTimeout(function() {	// 화면 로딩 직후 ui event가 셋팅되지 않아서 delay 줌
+							$viewCalendar.hide();
+							$viewSchedule.show()
+								.trigger("schdule:initial", {calendar:$calendar, scheduleId:scheduleId});
+						}, 200);
+					},
+					complete : function() {
+						$viewCalendar.loaded();
+					}
+				});
+			} else {
+				$viewCalendar.hide();
+				$viewSchedule.show()
+					.trigger("schdule:initial", {calendar:$calendar, scheduleId:scheduleId});
+			}
+		}).on("calendar:clickEvent", function(event, schedule) {	// 일정 간략 조회(modal)
+//			if(!schedule.sco.schedulePublic) {
+				if(!$viewQuickSchedule) {
+					$viewQuickSchedule = spro.showModal("quickView.do?scheduleId=" + schedule.id, {calendar:$calendar}, function(arg) {
+						switch(arg.type) {
+							case "modify" :
+								$calendar.trigger("calendar:write", arg.schedule.scheduleId);
+								break;
+							case "view" :
+								$calendar.trigger("calendar:viewSchedule", arg.schedule.scheduleId);
+								break;
+							case "delete" :
+								$calendar.trigger("calendar:deleteSchedule", arg.schedule.scheduleId);
+								break;
+						}
+						
+					}, true);
+				} else {
+					$viewQuickSchedule.trigger("schdule:initialView", schedule.id);
+				}
+//			}
+		}).on("calendar:quickWrite", function(event, schedule) {	// 일정 생성 폼(modal) : new, update
+			if(!schedule) schedule = {};
+			
+			// 신규 등록이므로 워크스페이스 일정 관리 화면이면 workspaceId셋팅함
+			schedule.workspaceId = configScheduleInfo.workspaceId || undefined;
+			if(!$createQuickSchedule) {
+				$viewCalendar.loading();
+				$createQuickSchedule = spro.showModal("quickWrite.do", schedule, function(arg) {
+					if($.isPlainObject(arg)) {	// schedule
+						$calendar.trigger("calendar:write", [null, arg]);
+					} else {
+						if(arg) {	// scheduleId
+							//alert("끝");
+							$calendar.fullCalendar("refetchEvents");
+						}
+					}
+					
+				}, true);
+				
+/*				setTimeout(function(){
+					$createQuickSchedule.modal("show")
+					.trigger("schdule:initialWrite", schedule);
+				}, 200);*/
+				
+				$viewCalendar.loaded();
+			} else {
+				$createQuickSchedule.modal("show")
+					.trigger("schdule:initialWrite", schedule);
+			}
+		}).on("calendar:write", function(event, scheduleId, schedule) {	// 일정 생성 폼 : new, update
+			if($viewSchedule && $viewSchedule.is("*"))
+				$viewSchedule.hide();
+			
+			if(!$createSchedule) {
+				$viewCalendar.loading();
+				$.ajax({
+					url : "writeSchedule.do",
+					async : false,
+					success : function(design) {
+						$createSchedule = $(design).appendTo("#main-container").filter("div:first");
+						
+						setTimeout(function(){
+							$viewCalendar.hide();
+							$createSchedule.show()
+								.trigger("schdule:initialForm", {calendar:$calendar, scheduleId:scheduleId, schedule:schedule});
+						}, 200);
+					},
+					complete : function() {
+						$viewCalendar.loaded();
+					}
+				});
+			} else {
+				$viewCalendar.hide();
+				$createSchedule.show()
+					.trigger("schdule:initialForm", {calendar:$calendar, scheduleId:scheduleId, schedule:schedule});
+			}
+		}).on("calendar:deleteSchedule", function(event, scheduleId) {	// 일정 삭제
+			$("body").loading();
+			$.post(spro.getContextRoot() + "/groupware/planner/deleteSchedule.do", {scheduleId:scheduleId})
+				.done(function(res) {		
+					$calendar.trigger("calendar:refetch");
+				})
+				.always(function() { $("body").loaded(); });
+		}).on("calendar:groupSchedule", function(event) {
+			var eventSource;
+			$.each(currentEventSources, function(i, source) {
+				if(source.name == "targetGroup") {
+					eventSource = source;
+					return false;
+				}
+			});
+
+			var url = "groupSchedulePopup.do?type=" + eventSource.data.targetType + "&groupId=" + eventSource.data.targetId;
+			var params = {
+ 				date : $calendar.fullCalendar("getDate").format(dateFormats.day)
+			};
+			
+			var $modal = spro.showModalFrame(url, params, null, {
+				title : sproLang.planner.titleText.userPerSchedule,
+				width : 890,
+				height: 500
+			});
+		});
+
+		
+		var calOption = {
+			customButtons : {
+				googleSync : { text : "구글 동기화", click : googleCalendarSync },
+				datePicker : { text : "선택", click:datePickerShow }
+			},
+			//firstHour:7,
+			year : today.getFullYear(),
+			month : today.getMonth(),
+			date : today.getDate(),
+			header: {
+				left: 'prev,datePicker,next, today',
+				center: 'title',
+				right:  (configScheduleInfo.googleSyncDate ? "googleSync " : "") + 'month,agendaWeek,agendaDay,listView'
+			},
+			buttonText: sproLang.planner.buttonText,			
+			titleFormat: sproLang.planner.titleFormat,
+			columnFormat: sproLang.planner.columnFormat,
+			timeFormat: 'HH:mm',
+			defaultTimedEventDuration : "01:00:00",
+//			height : "auto",
+//			contentHeight : "auto",
+			aspectRatio : $(window).width() / $(window).height(),
+//			weekends : false,
+//			businessHours : {start:"09:00", end:"18:00"},
+//			timezone : "Asia/Seoul",
+			minTime : configScheduleInfo.rangeHours[0] + ':00',
+			maxTime : configScheduleInfo.rangeHours[1] + ':00',
+			scrollTime : today,
+//			slotDuration : "00:30:00",
+			views : {
+				month : {titleFormat : "MM-DD"},
+				listView : {
+//					type : "month",
+					buttonText : sproLang.planner.buttonText.listView
+				}
+			},
+			defaultView: getDefaultViewMode(),
+			axisFormat: 'H:mm',
+//			allDayDefault: true,
+			selectable: true,
+			selectHelper: true,
+//			lazyFetching: true,	// 일정 캐시여부 : default - true 
+			editable: true,
+			weekMode: "liquid",	//fixed, liquid, variable
+//			fixedWeekCount : false,
+			//firstDay : 0,
+			// locale
+			monthNames: sproLang.datepicker.lblMonthNames,
+			monthNamesShort: sproLang.datepicker.lblMonthNamesShort, 
+			dayNames: sproLang.datepicker.lblDayNames,
+			dayNamesShort: sproLang.datepicker.lblDayNamesShort,
+			startParam : "startDate",
+			endParam : "endDate",
+			eventLimit : true,
+			eventLimitText : "",//sproLang.planner.labelText.more,
+			droppable: true, // this allows things to be dropped onto the calendar !!!
+			drop: function(date, jsEvent, ui, view) { // this function is called when something is dropped
+
+				var $externalEvent = $(this);
+				var extEventInfo = $externalEvent.data('eventInfo');
+//				var allDay = !date.hasTime();
+				var eventInfo = {};
+				
+				if(view.name == "month"){
+					var now = moment(spro.getCurTime());
+					if(now.get("minute") >= 30) now.add(1, "hour").set("minute", 0);
+					else now.set("minute", 30);
+					
+					var startDate = new Date(date);
+					startDate.setHours(now.toDate().getHours());
+					startDate.setMinutes(now.toDate().getMinutes());
+					
+					var endDate = new Date(startDate.getTime()+(spro.config.schedule.baseTime*60*1000));
+//					endDate.setHours(now.add(spro.config.schedule.baseTime, "minute").toDate().getHours());
+//					endDate.setMinutes(now.add(spro.config.schedule.baseTime, "minute").toDate().getMinutes());
+					
+					eventInfo.start = moment(startDate);
+					eventInfo.end = moment(endDate);
+					eventInfo.allDay = false;
+				}else{
+					eventInfo.start = fnRevistionTime(date);
+					eventInfo.allDay = !date.hasTime();
+				}
+				
+				setScheduleTarget(eventInfo, currentEventSources);	// 조회대상(타인/회의실) 추가
+				
+				switch(extEventInfo.type) {
+					case "category" :
+						$.extend(eventInfo, {categoryId:extEventInfo.categoryId, title:extEventInfo.title});
+						break;
+					case "group" :
+					case "personalGroup" :
+						var groupId = $("a", this).attr("href");
+						if(!extEventInfo.participantList) {
+							extEventInfo.participantList = getGroupMember(extEventInfo.type, groupId);
+							$externalEvent.data("eventInfo", extEventInfo);
+						}
+						
+						if(eventInfo.participant && eventInfo.participant.length > 0) {	// 조회 대상과 그룹 구성원을 함께 참여자로 설정
+							var participant = $.merge([], eventInfo.participant);
+							$.each(participant, function(i, user1) {
+								$.each(extEventInfo.participantList, function(j, user2) {
+									if(user1.id != user2.id)
+										participant.push(user2);
+								});
+							});
+							
+							eventInfo.participant = participant;
+						} else {
+							eventInfo.participant = extEventInfo.participantList;
+						}
+						break;
+				}
+
+				$calendar.trigger("calendar:quickWrite", eventInfo);
+			},
+			eventOrder : function(e1, e2) {
+				return (e2.source.name == "holiday" && e1.source.name != e2.source.name);	// 휴일 우선
+			},
+			// fullcalendar event
+			select: function(start, end, jsEvent, view) {	// view = sourceInfo
+				var schedule = { allDay:false };
+				
+				if(view.name == "month"){
+					var now = moment(spro.getCurTime());
+					now.add(1, "hour").set("minute", 0);
+					
+					var startDate = new Date(start);
+					var endDate = new Date(end.add(-1, "day"));
+					
+					if(startDate.getTime() == endDate.getTime()){
+						startDate.setHours(now.toDate().getHours());
+						startDate.setMinutes(now.toDate().getMinutes());
+						endDate = new Date(startDate.getTime()+(spro.config.schedule.baseTime*60*1000));
+						
+						schedule.start = moment(startDate);
+						schedule.end = moment(endDate);
+					}else{
+						schedule.allDay = true;
+						schedule.start = fnRevistionTime(start);
+						schedule.end = fnRevistionTime(end);
+					}
+					
+				}else{
+					schedule.allDay = !start.hasTime();
+					if(schedule.allDay) end.add(-1, "day");
+					schedule.start = fnRevistionTime(start);
+					schedule.end = fnRevistionTime(end);
+				}
+				
+				setScheduleTarget(schedule, currentEventSources);
+				
+				$calendar.trigger("calendar:quickWrite", schedule);
+			},
+			eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) {	// dayDelta, minuteDelta, allDay -- > delta
+				event.start = fnRevistionTime(event.start);
+				if(event.end) event.end = fnRevistionTime(event.end);
+
+				eventTimeChange("move", event, delta, !!event.allDay, revertFunc, jsEvent);
+			},
+			eventResize: function(event, delta, revertFunc, jsEvent, ui, view) {	//dayDelta, minuteDelta -- > delta
+				event.start = fnRevistionTime(event.start);
+				event.end = fnRevistionTime(event.end);
+				
+				eventTimeChange("resize", event, delta, false, revertFunc, jsEvent);
+			},
+			eventRender: function(event, element, view) {
+/*				if(event.sco.scheduleType == 0) {	// 미정 일정
+					element.addClass("unfixedTimeEvent");
+				}
+*/
+				if(!event.source) {
+					return;
+				}
+
+				if(event.source.name == "holiday") {
+					switch(view.name) {
+						case "month" :
+							var currentDate = view.calendar.getDate();
+							var year = currentDate.year(),
+								month = currentDate.month();
+							view.el.find(".fc-day-number:not(.fc-other-month)").each(function(idx, ele) {
+								var date = parseInt($(this).text(), 10);
+								if($(this).parent().parent().hasClass("fc-other-month")) {	// 현재 월이 아니면...
+									switch(true) {
+										case date > 28-7 : month = month == 0 ? 11 : month-1; break;	// 전월
+										case date < 0+7 : month = month == 11 ? 0 : month+1; break;	// 다음월
+									}
+								}
+								if(year == event.start.year() && month == event.start.month() && date == event.start.date()) {
+									var $cell = $(ele);
+									$cell.addClass("fc-holiday");
+									
+									var index = $cell.parent().children().index($cell),
+										$bg = $cell.parents("table:first").parent().prev();
+									$("tr", $bg).children().eq(index).addClass("fc-holiday");
+									return false;
+								}
+							});
+							break;
+						case "agendaDay" :
+						case "agendaWeek" :
+							var $headerCells = $("th.fc-day-header", view.noScrollRowEls.eq(0)),
+								$allDayCells = $("td.fc-day", view.noScrollRowEls.eq(1).children(".fc-bg")),
+								$timeDayCells = $("td.fc-day", view.scrollerEl.find("div.fc-bg"));
+
+							setTimeout(function() {
+								var $eventCell = element.parent(),
+									$eventRow = $eventCell.parent(),
+									eventCellNo = event.start.day();//$eventRow.children().index($eventCell);
+
+								$headerCells.eq(eventCellNo).addClass("fc-holiday");
+								$allDayCells.eq(eventCellNo).addClass("fc-holiday");
+								$timeDayCells.eq(eventCellNo).addClass("fc-holiday");
+							}, 0);
+							break;
+					}
+					
+					element.addClass("fc-event-holiday");
+				} else {
+//					if(!event.editable) $(element).css("cursor", "default");
+					if( view.name != "listView" && (event.source.name == "todo") ) {
+						
+						$(".fc-title", element).html(spro.unescapeHTML($(".fc-title", element).html()));						
+						$(".fc-title", element).prepend('<i class="icon task-management mr2"/>');
+					}
+
+					switch(event.isPrivate){
+						case -1 :
+							$(".fc-title", element).prepend('<i class="icon lock_blue mr2"/>');
+							break;
+						case 1 :
+	//						element.addClass("schedulePrivate");
+							$(".fc-title", element).prepend('<i class="icon lock mr2"/>');
+							break;
+					}
+					
+/*					if(event.sco && event.sco.hasReport == 1) {
+						$(".fc-title", element).prepend('<i class="icon edit1 mr2"/>');
+					}*/										
+
+					if( view.name != "listView" && (event.source.name == "company" || event.sco.company == 1) ) {
+						var pattenClass = "cal_color_company1";
+/*						switch(event.icon) {
+							case "event_class_type1" :
+							case "event_class_type9" :
+							case "event_class_type17" :
+								pattenClass = "cal_color_company2";
+								break;
+						}
+*/						element.addClass(pattenClass);
+					}
+					
+					if( view.name != "listView" && (event.source.name == "team" || event.sco.workspaceId) ) {
+						element.addClass("cal_color_team1");
+					}
+					
+					/*
+					if( view.name != "listView" && (event.source.name == "todo") ) {
+						var pattenClass = "cal_color_company1";
+						element.addClass(pattenClass);
+					}
+					*/
+				}
+
+				if(view.name == "month" || event.allDay == 1)
+					element.children(".fc-content").addClass("ellipsis");
+				
+//				$("#calendar .fc-event-inner").css({"font-size":"11px","line-height":"13px"});
+//				$("#calendar .fc-day-number").css({"font-size":"14px"});
+				
+/*				if(view.name == 'month'){
+					var mm = $("#calendar").fullCalendar("getDate").getMonth()+1;
+					if(!element.hasClass('month'+mm)){
+						//element.css('opacity','0.4');
+						element.find('div').children().css('color','#BBBBBB');
+					}
+				}*/
+			},
+			eventClick: function(event, e, view) {
+				switch(true) {
+					case event.source && event.source.name == 'holiday':
+						return false;
+						break;
+					case event.source && event.source.name == 'todo':
+						var todoParam = event.id.split("^");
+						var todoUrl = spro.getContextRoot() + "/groupware/todo/readTodoView.do?systemCode=SPRO&subworkCode=TASK&taskKey="+todoParam[0]+"&workerId="+todoParam[1];
+						location.href = todoUrl;
+						break;
+					default :
+						if(event.viewable)
+							$calendar.trigger("calendar:clickEvent", event);//viewEvent(event);
+				}
+			},
+			eventMouseover : function(event, e, view) {
+				
+				if(event.source){
+					if(event.source.name == "holiday")	//휴일
+						return false;					
+				}				
+//				if(!event.viewable) return false;
+				
+				var $target = $(e.currentTarget).data("isMouseOver", true);
+
+				if(event.source && event.source.name == "todo"){
+					setTimeout(function() {
+						$("div.todoHint").remove();
+						if($target.data("isMouseOver") && !!event.sco) {							
+
+							var startDate = moment(event.sco.startDate),
+								endDate = moment(event.sco.endDate);
+
+							var hintData = {
+								title : event.viewable ?  event.title : sproLang.planner.titleText.privateSchedule,
+								icon : event.icon,
+								time : startDate.format(event.allDay == 1 ? dateFormats.day : dateFormats.time)
+							};
+							
+							if(event.allDay) {	// 종료시간
+								if(hintData.time == endDate.format(dateFormats.day)) hintData.time += " " + sproLang.planner.labelText.allday;
+								else hintData.time += " ~ " + endDate.format(dateFormats.day);
+							} else {
+								if(startDate.format(dateFormats.day) == endDate.format(dateFormats.day)) hintData.time += "~ " + endDate.format(dateFormats.time);
+								else hintData.time += " ~ " + endDate.format(dateFormats.time);
+							}
+							
+							var $hint = $("#tmpTodoHint").tmpl(hintData).appendTo("body");
+							    $hint.fadeIn('500');
+							    $hint.fadeTo('10', 1.9);
+							    
+						    var $event = $(e.target);
+						    if($event.hasClass("fc-resizer")) $event = $event.parent();
+						    
+						    var position = $event.offset(),
+						    	top = position.top - 12,
+						    	left = position.left + $event.width() + 4;
+
+						    if(left + $hint.outerWidth() > $(window).width()) left = position.left - $hint.outerWidth() - 6;
+						    $hint.css({
+						    	top : top + "px",
+						    	left : left + "px"
+						    });
+						}
+					}, 300);
+				}else{
+					setTimeout(function() {
+						$("div.scheduleHint").remove();
+						if($target.data("isMouseOver") && !!event.sco) {
+							var schedule = $target.data("schedule");
+							if(!schedule) {
+								$.ajax({
+									url : "getScheduleAllData.do",
+									data : {scheduleId:event.sco.scheduleId},
+									async : false,
+									success : function(s) {
+										schedule = s;
+										$target.data("schedule", schedule);
+									}
+								});
+							}
+
+							var startDate = moment(event.sco.startDate),
+								endDate = moment(event.sco.endDate),
+								registDate = moment(new Date(schedule.registDate));
+
+							var hintData = {
+								title : event.viewable ?  event.title : sproLang.planner.titleText.privateSchedule,
+								icon : event.icon,
+								time : startDate.format(event.allDay == 1 ? dateFormats.day : dateFormats.time),	// 시작시간
+								registerName : schedule.registerName,
+								registDate : registDate.format(dateFormats.time),
+								participantList : schedule.participantList,
+								conferenceRooms : $.grep(schedule.facilityList, function(facility) { return facility.categoryId == "FC0000000"; }),
+								facilities : $.grep(schedule.facilityList, function(facility) { return facility.categoryId != "FC0000000"; }),
+								place : schedule.place
+							};
+							
+							if(event.allDay) {	// 종료시간
+								if(hintData.time == endDate.format(dateFormats.day)) hintData.time += " " + sproLang.planner.labelText.allday;
+								else hintData.time += " ~ " + endDate.format(dateFormats.day);
+							} else {
+								if(startDate.format(dateFormats.day) == endDate.format(dateFormats.day)) hintData.time += "~ " + endDate.format(dateFormats.time);
+								else hintData.time += " ~ " + endDate.format(dateFormats.time);
+							}
+							
+							var $hint = $("#tmpScheduleHint").tmpl(hintData).appendTo("body");
+							    $hint.fadeIn('500');
+							    $hint.fadeTo('10', 1.9);
+
+						    var $event = $(e.target);
+						    if($event.hasClass("fc-resizer")) $event = $event.parent();
+						    
+						    var position = $event.offset(),
+						    	top = position.top - 12,
+						    	left = position.left + $event.width() + 4;
+
+						    if(left + $hint.outerWidth() > $(window).width()) {
+						    	left = position.left - $hint.outerWidth() - 6;
+						    }
+						    var calendarHeight = $("#calendar").height() + $("#calendar").offset().top;
+						    if(top + $hint.height() > calendarHeight) {
+						    	top = top - ((top+$hint.height())-calendarHeight);
+						    }
+						    
+						    $hint.css({
+						    	top : top + "px",
+						    	left : left + "px"
+						    });
+						    
+						}
+					}, 300);
+				}
+				
+			},
+			eventMouseout : function(event, e, view) {
+//				if(event && !event.viewable) return false;
+
+			    $("div.scheduleHint").remove();
+			    $("div.todoHint").remove();
+			    
+			    $(e.currentTarget).data("isMouseOver", false);
+			},
+/*			searchEventClick: function(event, jsEvent, view) {
+				if(event.viewable)
+					viewEvent(event);
+			},
+*/			loading: function(isLoading, view) {
+				if(isLoading) {
+					$viewCalendar.loading();
+				} else {
+					$viewCalendar.loaded();
+				}
+			},
+			viewRender : function(view, element) {
+				//년월 또는 일 달력 조회되게
+				if(view.name == "month") {	
+					$("button.fc-datePicker-button").datepicker('remove'); 
+					$("button.fc-datePicker-button").off("show").off("changeDate").datepicker({format: "yyyy.mm", minViewMode: "months"})
+					.on("show", function(event) {
+						$("button.fc-datePicker-button").datepicker( "setDate", setDatepickerVal);
+					})
+					.on("changeDate", function(event){
+						setDatepickerVal = event.date;
+						$("#calendar").fullCalendar("gotoDate", event.date);
+					});
+				}else if(view.name == "agendaWeek" || view.name == "agendaDay"){
+					$("button.fc-datePicker-button").datepicker('remove'); 
+					$("button.fc-datePicker-button").off("show").off("changeDate").datepicker({format: "yyyy.mm.dd", minViewMode: "days"})
+					.on("show", function(event) {
+						$("button.fc-datePicker-button").datepicker( "setDate", setDatepickerVal);
+					})
+					.on("changeDate", function(event){
+						setDatepickerVal = event.date;
+						$("#calendar").fullCalendar("gotoDate", event.date);
+					});
+				}
+				
+				var isAddedEventSource = false;	// listView가 아닌 view에서 addEventSource했으면 refetch하지 않기 위해서
+				if(lastView && lastView != view) {	// view가 바뀔때...
+					if(lastView.name == "listView") {	// listView에서 다른 view로 넘어 왔을때...
+						$.each(currentEventSources, function(){
+							$calendar.fullCalendar("addEventSource", this);
+						});
+						isAddedEventSource = true;
+					} else {
+						if(view.name == "listView") {	// listView로 넘어 왔을때 : fetch할때 addEventSource되 일정을 가져오므로...
+							$.each(currentEventSources, function(){ $calendar.fullCalendar("removeEventSource", this); });
+						}
+					}
+				}
+				
+				var $toolbar = $("div.fc-toolbar", $calendar);
+				if(view.name == "listView") {
+					var $form = $("form", element).insertAfter( $toolbar.children(".fc-left") );
+					$(".fc-left, .fc-center", $toolbar).hide();
+					
+					view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+					view.refetchEvents();
+				} else {
+					$("form", $toolbar).remove();
+					$(".fc-left, .fc-center", $toolbar).show();
+					
+					!isAddedEventSource && $calendar.trigger("calendar:refetch");
+				}
+				
+				lastView = view;
+			}
+		};
+		$calendar.fullCalendar(calOption);
+		
+		$(window).resize(function() {
+			$calendar.fullCalendar("option", "aspectRatio", $(window).width() / $(window).height());
+		});
+		if(configScheduleInfo.isGoogle == 1) {
+			
+			var syncTime = (spro.getCurTime() - configScheduleInfo.googleSyncDate) /(1000*60*60*24),
+				$syncButton = $("button.fc-googleSync-button", "#calendar");
+
+			switch(true) {
+				case syncTime < 1 : break;
+				case syncTime >= 1 && syncTime < 3 : $syncButton.addClass("text-color1"); break;
+				case syncTime >= 3 && syncTime < 5 : $syncButton.addClass("text-color2"); break;
+				case syncTime >= 5 && syncTime < 10 : $syncButton.addClass("text-color3"); break;
+				case syncTime >= 10 && syncTime < 20 : $syncButton.addClass("text-color4"); break;
+				case syncTime >= 20 :
+					$syncButton.addClass("text-color4");
+					if(confirm("지금 구글 캘린더 동기화를 진행하시겠습니까?")) {
+						googleCalendarSync();
+					}
+					break;
+			}
+		}
+		
+		
+		// date navigation button
+/*		$("td.fc-header-left, td.fc-header-right").find(".fc-button").on("click", function(event){
+			var $el = $(this);
+			switch(true) {
+				case $el.hasClass("fc-button-prev") :
+				case $el.hasClass("fc-button-next") :
+				case $el.hasClass("fc-button-today") :
+					break;
+				
+				case $el.hasClass("fc-button-month") :
+				case $el.hasClass("fc-button-agendaWeek") :
+				case $el.hasClass("fc-button-agendaDay") :
+				case $el.hasClass("fc-button-list") :
+					break;
+			}
+			
+			var param = {};
+			var view = $calendar.fullCalendar("getView");
+			param.view = view.name;
+			
+			var date = $calendar.fullCalendar("getDate");
+			param.date = date.format();
+			pageNavi.setHashParam(param);
+		});
+		
+		var pageNavi = LocationManager(function(param) {
+			var view = $calendar.fullCalendar("getView");
+			var date = $calendar.fullCalendar("getDate");
+			
+			if(!param) {
+				location.reload();
+			} else {
+				if(param.view && param.view != view.name) {	// view mode 변경 없음
+					$calendar.fullCalendar("changeView", param.view);
+				} else {
+					$calendar.fullCalendar("gotoDate", param.date);
+				}
+			}
+		});
+*/		
+	});
+	
+	
+
+	
+	
+	// fullcalendar eventSource controll
+	function resetEventSource(sources) {
+		while(currentEventSources.length) {
+			$calendar.fullCalendar("removeEventSource", currentEventSources.pop());
+		}
+		
+		currentEventSources = sources;
+		if($("#checkCompanySchedule").is(":visible") && $("#checkCompanySchedule").is(":checked")) {
+			currentEventSources.push(eventSources.company);
+		}
+		
+		currentEventSources = sources;
+		if($("#checkTodoSchedule").is(":visible") && $("#checkTodoSchedule").is(":checked")) {
+			currentEventSources.push(eventSources.todo);
+		}
+		
+		currentEventSources = sources;
+		if($("#checkTeamSchedule").is(":visible") && $("#checkTeamSchedule").is(":checked")) {
+			currentEventSources.push(eventSources.team);
+		}
+		
+		var view = $calendar.fullCalendar("getView");
+		if(view.name == "listView") {
+			view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			view.refetchEvents();
+		} else {
+			$calendar.fullCalendar("refetchEvents");
+			$.each(currentEventSources, function() { $calendar.fullCalendar("addEventSource", this); });
+		}
+	}
+	
+	setCompanyEventSource = function(isAdd) {		
+		var view = $calendar.fullCalendar("getView");
+		if(view.name == "listView") {
+			view.refetchEvents();
+			if(isAdd) {
+				currentEventSources.push(eventSources.company);
+				view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			} else {
+				var sources = [];
+				$.each(currentEventSources, function(index, source) {
+					if(source.name != "company") sources.push(source);
+				});
+				currentEventSources = sources;
+				view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			}
+		} else {
+			//$calendar.fullCalendar("refetchEvents");
+			if(isAdd) {
+				$calendar.fullCalendar("addEventSource", eventSources.company);
+				currentEventSources.push(eventSources.company);
+			} else {
+				var sources = [];
+				$.each(currentEventSources, function(index, source) {
+					if(source.name == "company") $calendar.fullCalendar("removeEventSource", source);
+					else sources.push(source);
+				});
+				currentEventSources = sources;
+			}
+		}
+	};
+	
+	setTeamEventSource = function(isAdd) {		
+		var view = $calendar.fullCalendar("getView");
+		if(view.name == "listView") {
+			view.refetchEvents();
+			if(isAdd) {
+				currentEventSources.push(eventSources.team);
+				view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			} else {
+				var sources = [];
+				$.each(currentEventSources, function(index, source) {
+					if(source.name != "team") sources.push(source);
+				});
+				currentEventSources = sources;
+				view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			}
+		} else {
+			//$calendar.fullCalendar("refetchEvents");
+			if(isAdd) {
+				$calendar.fullCalendar("addEventSource", eventSources.team);
+				currentEventSources.push(eventSources.team);
+			} else {
+				var sources = [];
+				$.each(currentEventSources, function(index, source) {
+					if(source.name == "team") $calendar.fullCalendar("removeEventSource", source);
+					else sources.push(source);
+				});
+				currentEventSources = sources;
+			}
+		}
+	};
+	
+	setTodoEventSource = function(isAdd) {		
+		var view = $calendar.fullCalendar("getView");
+		if(view.name == "listView") {
+			view.refetchEvents();
+			if(isAdd) {
+				currentEventSources.push(eventSources.todo);
+				view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			} else {
+				var sources = [];
+				$.each(currentEventSources, function(index, source) {
+					if(source.name != "todo") sources.push(source);
+				});
+				currentEventSources = sources;
+				view.eventSources =  currentEventSources;	// 검색에서 대상을 선택하도록 하기위해서...
+			}
+		} else {
+			//$calendar.fullCalendar("refetchEvents");
+			if(isAdd) {
+				$calendar.fullCalendar("addEventSource", eventSources.todo);
+				currentEventSources.push(eventSources.todo);
+			} else {
+				var sources = [];
+				$.each(currentEventSources, function(index, source) {
+					if(source.name == "todo") $calendar.fullCalendar("removeEventSource", source);
+					else sources.push(source);
+				});
+				currentEventSources = sources;
+			}
+		}
+	};
+	
+	// 기본 뷰 모드
+	function getDefaultViewMode() {
+		var result;
+		switch(configScheduleInfo.defaultView || 2) {
+			case 1 : result = "agendaDay"; break;
+			case 2 : result = "agendaWeek"; break;
+			case 3 : result = "month"; break;
+			case 4 : result = "listView"; break;
+//			case 5 : result = "teamDay"; break;
+//			case 6 : result = "teamWeek"; break;
+		}
+		return result;
+	}
+	
+	// 일정 상세조회
+	function viewEvent(event) {
+		if(!event.sco.schedulePublic) {
+			if(!$viewQuickSchedule) {
+				$viewQuickSchedule = spro.showModal("quickView.do?scheduleId=" + event.id, {calendar:$calendar}, undefined, true);
+			} else {
+				$viewQuickSchedule.modal("show")
+					.trigger("schdule:initialView", event.id);
+			}
+		}
+	}
+	
+	// 일정을 수정할때
+	function editEvent(scheduleInfo) {
+		$.get( spro.getContextRoot() + "/groupware/planner/getScheduleAllData.do", {scheduleId: scheduleInfo["scheduleId"]||scheduleInfo["id"]}, function(schedule, state, xhr) {
+			if(xhr.responseText == "") {
+				alert(sproLang.planner.errorText.eventDeleted);
+//				$calendar.fullCalendar("removeEventSource");
+				$calendar.trigger("onClickMyCalendar");
+			} else {
+				$calendar.hide();
+				
+				$.extend(schedule, {editable:true, viewable:true});//, color:""
+				var event = $.fullCalendar.createEvent(schedule);
+				
+				if(event.sco.repeat > 0) {	// 반복일정이면 반복 일정 중 해당 일자의 일정을 수정할 수 있도록...
+
+					event.start = scheduleInfo.start;	// Date object
+					event.end = scheduleInfo.end;
+					
+					var repeatInfo = null;
+					if(event.sco.recurrences.length == 1) repeatInfo = event.sco.recurrences[0];	// 반복일정이 쪼개지지 않았을 때...
+					else {	// 반복일정이 쪼개진 경우...
+						var startDate = scheduleInfo.start.valueOf();
+						var endDate = scheduleInfo.end.valueOf();
+						$.each(event.sco.recurrences, function() {
+							if(startDate >= this.startDate && endDate <= this.endDate) {
+								repeatInfo = this;
+							}
+						});
+					}
+					
+					event.sco.repeatType = repeatInfo.repeatType;
+					event.sco.repeatPeriod = repeatInfo.repeatPeriod;
+					event.sco.repeatPeriodOption = repeatInfo.repeatPeriodOption;
+					event.sco.repeatStartDate = repeatInfo.startDate;
+					event.sco.repeatEndDate = repeatInfo.endDate;
+				}
+
+				event.sco.contents = schedule.contents;
+				event.sco.participantList = schedule.participantList;
+				event.sco.alarmList = schedule.alarmList;
+				event.sco.fileDataList = schedule.fileDataList;
+				event.sco.recurrences = schedule.recurrences;
+				event.sco.meetingRoomId = schedule.meetingRoomId;
+				eventMgmt.editEvent(event);
+				
+				$("#mgmt-panel").bind("onUpdateCancel", function() {
+					$calendar.trigger("onClickMyCalendar");
+					$(this).unbind("onUpdateCancel");
+				});
+			}
+		});
+	}
+	
+	// 일정 시간이 변경된 경우
+	function eventTimeChange(method, event, delta, allDay, revertFunc, jsEvent) {
+		switch(true) {
+//			case !!event.sco.repeatType :	// 반복일정
+			case !event.sco.scheduleType :	// 미정 일정(합의)
+				var msg = event.sco.scheduleType == 0 ? sproLang.planner.messageText.unfixedUpdateConfirm : sproLang.planner.messageText.repeatUpdateConfirm;
+				if(confirm(msg)) {
+					revertFunc();
+					//viewEvent(event);
+	
+					editEvent(event);
+				} else {
+					revertFunc();
+				}
+				break;
+			default :
+				var startDate = event.start.toDate(),
+					endDate;
+				if(allDay) endDate = startDate;	// 종일일정이면 시작시간과 동일하게 설정
+				else {
+					if(event.end) endDate = event.end.toDate();
+					else endDate = event.start.clone().add("hour", 1).toDate();	// 종일 일정에서 시간일정으로 내려올때...
+				}
+				
+				var schedule = {
+					scheduleId : event.id,
+					startDate : startDate,
+					endDate : endDate,
+					wholeday : allDay ? 1 : 0
+				};
+
+				$("body").loading();
+				$.ajax({
+					url : "calendar/updateScheduleTime.do",
+					type : "post",
+					data : schedule,
+					success : function(res) {
+						$calendar.fullCalendar("refetchEvents");
+					},
+					error : function(xhr, status, error) {
+						var result = xhr.responseJSON;
+						alert(result.errMsg);
+						revertFunc();
+					},
+					complete : function() {
+						$("body").loaded();
+					}
+				});
+		}
+	}
+	
+	function getGroupMember(type, groupId) {	// 팀 구성원 목록 가져오기
+//		{"name":"관리자 사원","type":"user","userName":"관리자","id":"admin_P1","group":"GD0000001","empNo":null,"email":null,"jobTitleName":"사원","teamName":"LG CNS","mobile":"010-5555-3456","jobTitleCode":"JT00017","searchSubFlag":false}
+		var participantList;
+		$.ajax({
+			async : false,
+			url : "groupItems.do",
+			data : {targetType:type, targetId:groupId},
+			success : function(users) {
+				if(users && users.length > 0) {
+					participantList = $.map(users, function(user) {
+						return $.extend(
+							new spro.User(user.targetId, user.targetName, user.jobTitleName||"", user.teamName||"", "", "", groupId, user.tenantId, user.tenantName),
+							{targetType:1}
+						);
+					 });
+				}
+			},
+			complete : function() {}
+		});
+		return participantList;
+	}
+	
+	function setScheduleTarget(schedule, sources) {
+		if(!sources) sources = currentEventSources;
+		
+		if(sources) {
+			var targetInfo;
+			$.each(sources, function(idx, source) {
+				switch(source.name) {
+					case "targetUser" :
+						$.ajax({
+							url : spro.getContextRoot() + "/groupware/planner/getUserInfo.do",
+							data : {userId:source.data.targetId},
+							type : "get",
+							async : false,
+							success : function(user) {
+								schedule.participant = [$.extend(
+									new spro.User(user.userId, user.userName, user.jobTitleName||"", user.teamName||"", "", user.mobile, user.groupId, user.tenantId, user.tenantName),
+									{targetType:1}
+								)];
+							}
+						});
+						break;
+					case "facilityReserve" :
+						targetInfo = source.data;
+						$.ajax({
+							url : spro.getContextRoot() + "/groupware/facility/getFacility.do",
+							data : {facilityId:source.data.targetId},
+							type : "get",
+							async : false,
+							success : function(facility) {
+								schedule.facilityList = [facility];
+							}
+						});
+						break;
+					case "targetGroup" :
+						var $container;
+						switch(source.data.targetType) {
+							case "group" : $container = $("#externalEventsGroup"); break;
+							case "personalGroup" : $container = $("#externalEventsPersonalGroup"); break;
+						}
+						
+						if($container.is("*")) {
+							var $externalGroupEvent = $("a[href=" + source.data.targetId + "]", $container).parent();
+							var eventInfo = $externalGroupEvent.data("eventInfo");
+							if(!eventInfo) eventInfo = {type:source.data.targetType};
+							if(!eventInfo.participantList) {
+								eventInfo.participantList = getGroupMember(source.data.targetType, source.data.targetId);
+								$externalGroupEvent.data("eventInfo", eventInfo);
+							}
+							
+							schedule.participant = eventInfo.participantList;
+						}
+						break;
+				}
+			});
+		}
+	}
+	
+	
+	//------ ajax location controll : test-----------------------------------------------------------------------------
+/*	function LocationManager(callback) {
+		var _currentHash, hasInitial = false;
+		var _callback = callback;
+		
+		function getHashParam() {
+			var hashParams;
+			var hash = location.hash;
+			if(hash) {
+				hashParams = {};
+				hash = hash.substring(1);
+				$.each(hash.split("&"), function(idx, str) {
+					var param = str.split("=");
+					hashParams[param[0]] = param[1];
+				});
+			}
+			
+			return hashParams;
+		}
+		
+		function checkLocation() {
+			var hash = location.hash;
+			
+			if(_currentHash != hash) {
+				if(!hash) {
+					if(hasInitial) {
+						_callback();
+					}
+				} else {
+					hasInitial = true;
+					
+					_currentHash = hash;
+					_callback(getHashParam());
+				}
+			}
+		}
+		
+		function setHashParam(param) {
+			var hashString = "";
+			$.each(param, function(key, value) {
+				hashString += key + "=" + value + "&";
+			});
+			
+			if(hashString) {
+				hashString = "#" + hashString.substring(0, hashString.length-1);
+				_currentHash = hashString;
+				
+				var href = location.href.substring(0, location.href.indexOf("#"));
+				location.href = href + hashString;
+			}
+		}
+		
+		setInterval(checkLocation, 200);
+		return {setHashParam : setHashParam};
+	}
+*/	//-----------------------------------------------------------------------------------------
+	
+	
+	
+	
+	//-- 필요없어보이는 코드 ------------------------------------------------------------------------
+
+	// 대상이 나에게 권한을 위임한 사람인지 확인
+/*	function isMandator(targetId) {
+		var result = false;
+		if(mandatorList && mandatorList.length > 0) {
+			$.each(mandatorList, function() {
+				if(this.mandatorId == targetId) {
+					result = true;
+					return false;
+				}
+			});
+		}
+		return result;
+	}
+	*/
+})(jQuery);

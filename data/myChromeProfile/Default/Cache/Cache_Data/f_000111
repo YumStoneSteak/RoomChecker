@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>KT bizmeka EZ</title>
+	
+
+
+
+
+
+
+<!-- favicon -->
+<script type="text/javascript" nonce="b2241a82b80f45eeb9c0442b7f1" src="//local.adguard.org?ts=1704419258378&amp;type=content-script&amp;dmn=ezgroupware.bizmeka.com&amp;url=https%3A%2F%2Fezgroupware.bizmeka.com%2Fgroupware%2Ffacility%2Fadmin%2FconferenceRoomManage.do%3F&amp;app=chrome.exe&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script>
+<script type="text/javascript" nonce="b2241a82b80f45eeb9c0442b7f1" src="//local.adguard.org?ts=1704419258378&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script><link rel="shortcut icon" href="/images/common/favicon.ico">
+<link rel="stylesheet" href="/css/plugins.css">
+<link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/basic.css?v002">
+<link rel="stylesheet" href="/css/theme01/theme.css">
+<link type="text/css" rel="stylesheet" href="/css/dev.css">
+
+<script type="text/javascript">var contextRoot = "";</script>
+<script type="text/javascript" src="/js/langResource/ko.js"></script>
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-1.11.3.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-2.1.4.min.js"></script>
+<![endif]-->
+<!--[if !IE]> -->
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-2.1.4.min.js"></script>
+<!-- <![endif]-->
+
+<script type="text/javascript">jQuery.migrateMute = true;</script>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/plugins.js"></script>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js"></script> 
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/moment.min.js"></script>
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/commonExtend.js"></script>
+
+<link rel="stylesheet" href="https://ezportal.bizmeka.com/js/malihu-custom-scrollbar-plugin-3.1.3/jquery.mCustomScrollbar.min.css">
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/malihu-custom-scrollbar-plugin-3.1.3/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script type="text/javascript" src="https://ezportal.bizmeka.com/js/commonSProject.js?v001"></script>
+<script type="text/javascript" src="/js/commonProject.js"></script>
+<script type="text/javascript" src="/JavaScriptServlet"></script>
+
+	
+	<script type="text/javascript">
+	(function($){
+		$(function() {
+			$("div.leftmenu-inner-scroll").mCustomScrollbar({
+				axis : "y",
+				theme: "minimal-dark",//3d
+				scrollButtons:{enable:true},
+				setHeight : "100%"
+			});
+		});
+	})(jQuery);
+	</script>
+</head>
+<body>
+	<div id="page-container" class="sub sidebar-mini sidebar-subarea">
+		
+
+
+
+
+
+ 
+
+<link rel="stylesheet" href="https://ezsso.bizmeka.com/css/quick.css">
+<link rel="stylesheet" href="/css/tip-twitter/tip-twitter.css">
+<script type="text/javascript" src="/js/poshytip/jquery.poshytip.js"></script>
+
+
+
+<script type="text/javascript">
+function logout() {
+	if(confirm("로그아웃 하시겠습니까?")) {
+		location.href = "/logout.do";		
+	}
+}
+
+(function($) {
+	var leftMenu = '{"gnbMenuCategory":[{"popupYn":null,"searchConditionString":null,"categoryCode":"collabor","categoryName":"협업","menuList":[{"popupYn":null,"searchConditionString":null,"productId":"PRO_000178","sproId":null,"sortOrder":2,"entityId":"ezwebmail.bizmeka.com","landingUrl":"https://ezwebmail.bizmeka.com/mail/list.do?entityId=ezwebmail.bizmeka.com","serviceYn":"Y","categoryCode":null,"productName":"메일","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000147","sproId":null,"sortOrder":3,"entityId":"ezgroupware.bizmeka.com/approval","landingUrl":"https://ezgroupware.bizmeka.com/groupware/approval/work/apprlist/listApprTodo.do?entityId=ezgroupware.bizmeka.com/approval","serviceYn":"Y","categoryCode":null,"productName":"전자결재","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000173","sproId":null,"sortOrder":4,"entityId":"ezgroupware.bizmeka.com/board","landingUrl":"https://ezgroupware.bizmeka.com/groupware/board/boardItem/listAllBoardItemView.do?entityId=ezgroupware.bizmeka.com/board","serviceYn":"Y","categoryCode":null,"productName":"게시판","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000177","sproId":null,"sortOrder":5,"entityId":"ezgroupware.bizmeka.com/planner","landingUrl":"https://ezgroupware.bizmeka.com/groupware/planner/calendar.do?entityId=ezgroupware.bizmeka.com/planner","serviceYn":"Y","categoryCode":null,"productName":"일정","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000499","sproId":null,"sortOrder":6,"entityId":"ezgroupware.bizmeka.com/task","landingUrl":"https://ezgroupware.bizmeka.com/groupware/todo/listTodoMainView.do?entityId=ezgroupware.bizmeka.com/task","serviceYn":"Y","categoryCode":null,"productName":"업무관리","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000148","sproId":null,"sortOrder":7,"entityId":"ezgroupware.bizmeka.com/social","landingUrl":"https://ezgroupware.bizmeka.com/groupware/social/group/listMyGroupView.do?entityId=ezgroupware.bizmeka.com/social","serviceYn":"Y","categoryCode":null,"productName":"기업SNS","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000448","sproId":null,"sortOrder":8,"entityId":"ezgroupware.bizmeka.com/message","landingUrl":"https://ezgroupware.bizmeka.com/groupware/message/messageListView.do?entityId=ezgroupware.bizmeka.com/message","serviceYn":"Y","categoryCode":null,"productName":"쪽지","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000174","sproId":null,"sortOrder":9,"entityId":"ezgroupware.bizmeka.com/customer","landingUrl":"https://ezgroupware.bizmeka.com/groupware/customer/customerList.do?customerGroupId=&entityId=ezgroupware.bizmeka.com/customer","serviceYn":"Y","categoryCode":null,"productName":"거래처","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000175","sproId":null,"sortOrder":10,"entityId":"ezgroupware.bizmeka.com/vcard","landingUrl":"https://ezgroupware.bizmeka.com/groupware/vcard/listUserVcard.do?entityId=ezgroupware.bizmeka.com/vcard","serviceYn":"Y","categoryCode":null,"productName":"주소록","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000176","sproId":null,"sortOrder":11,"entityId":"ezgroupware.bizmeka.com/addressbook","landingUrl":"https://ezgroupware.bizmeka.com/groupware/addressbook/readAddrbookListByAddrgroup.do?entityId=ezgroupware.bizmeka.com/addressbook","serviceYn":"Y","categoryCode":null,"productName":"조직도","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000480","sproId":null,"sortOrder":12,"entityId":"ezgroupware.bizmeka.com/note","landingUrl":"https://ezgroupware.bizmeka.com/groupware/note/listNoteView.do?entityId=ezgroupware.bizmeka.com/note","serviceYn":"Y","categoryCode":null,"productName":"메모","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000449","sproId":null,"sortOrder":13,"entityId":"ezgroupware.bizmeka.com/vote","landingUrl":"https://ezgroupware.bizmeka.com/groupware/poll/pollList.do?entityId=ezgroupware.bizmeka.com/vote","serviceYn":"Y","categoryCode":null,"productName":"온라인투표","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000482_WEB","sproId":null,"sortOrder":14,"entityId":"messager.bizmeka.com","landingUrl":"https://ezportal.bizmeka.com/portal/main/messengerServiceOpen.do","serviceYn":"Y","categoryCode":null,"productName":"웹메신저","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000482","sproId":null,"sortOrder":14,"entityId":"messager.bizmeka.com","landingUrl":"https://ezportal.bizmeka.com/portal/main/messengerServiceOpen.do?entityId=messager.bizmeka.com","serviceYn":"Y","categoryCode":null,"productName":"메신저","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000510","sproId":null,"sortOrder":19,"entityId":"ezwebfax.bizmeka.com","landingUrl":"https://ezwebfax.bizmeka.com/fax.main.do?entityId=ezwebfax.bizmeka.com","serviceYn":"Y","categoryCode":null,"productName":"웹팩스","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000545","sproId":null,"sortOrder":20,"entityId":"ezgroupware.bizmeka.com/documentbox","landingUrl":"https://ezgroupware.bizmeka.com/groupware/filebox/prsnlDiskView.do?entityId=ezgroupware.bizmeka.com/documentbox","serviceYn":"Y","categoryCode":null,"productName":"업무문서함","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000564","sproId":null,"sortOrder":24,"entityId":"boxbee.bizmeka.com","landingUrl":"https://user-api.homepick.com/user/api/bizmeka/sso/handleLogin?entityId=boxbee.bizmeka.com","serviceYn":"Y","categoryCode":null,"productName":"퀵/택배","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000598","sproId":null,"sortOrder":25,"entityId":"ezgroupware.bizmeka.com/note","landingUrl":"https://ezportal.bizmeka.com/portal/support/gooroomee/makeRoomPopup.do?entityId=ezgroupware.bizmeka.com/note","serviceYn":"Y","categoryCode":null,"productName":"화상회의","localeCode":null,"myMenuYn":"N","popupStatus":null}]},{"popupYn":null,"searchConditionString":null,"categoryCode":"hr","categoryName":"인사","menuList":[{"popupYn":null,"searchConditionString":null,"productId":"PRO_000580","sproId":null,"sortOrder":8,"entityId":"ezkhuman.bizmeka.com/basic","landingUrl":"https://ezkhuman.bizmeka.com/product/basic.do?entityId=ezkhuman.bizmeka.com/basic","serviceYn":"Y","categoryCode":null,"productName":"인사","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000583","sproId":null,"sortOrder":9,"entityId":"ezkhuman.bizmeka.com/golvwkmng","landingUrl":"https://ezkhuman.bizmeka.com/product/outlnk.do?code=PJ02&entityId=ezkhuman.bizmeka.com/golvwkmng","serviceYn":"Y","categoryCode":null,"productName":"근태관리","localeCode":null,"myMenuYn":"N","popupStatus":null}]},{"popupYn":null,"searchConditionString":null,"categoryCode":"ac","categoryName":"회계","menuList":[{"popupYn":null,"searchConditionString":null,"productId":"PRO_000555","sproId":null,"sortOrder":8,"entityId":"ezkaccount.bizmeka.com/basic","landingUrl":"https://ezkaccount.bizmeka.com/product/basic.do?entityId=ezkaccount.bizmeka.com/basic","serviceYn":"Y","categoryCode":null,"productName":"회계","localeCode":null,"myMenuYn":"N","popupStatus":null}]},{"popupYn":null,"searchConditionString":null,"categoryCode":"bs","categoryName":"영업","menuList":[{"popupYn":null,"searchConditionString":null,"productId":"PRO_000569","sproId":null,"sortOrder":2,"entityId":"ezcrm.bizmeka.com","landingUrl":"https://ezcrm.bizmeka.com/sales/main/page.do?entityId=ezcrm.bizmeka.com","serviceYn":"Y","categoryCode":null,"productName":"영업CRM","localeCode":null,"myMenuYn":"N","popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000600","sproId":null,"sortOrder":6,"entityId":"ezksales.bizmeka.com/basic","landingUrl":"https://ezsales.bizmeka.com/product/basic.do?entityId=ezksales.bizmeka.com/basic","serviceYn":"Y","categoryCode":null,"productName":"영업/재고","localeCode":null,"myMenuYn":"N","popupStatus":null}]},{"popupYn":null,"searchConditionString":null,"categoryCode":"basic","categoryName":"기본","menuList":[{"popupYn":null,"searchConditionString":null,"productId":"PRO_000605","sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezportal.bizmeka.com/portal/support/millie/main.do","serviceYn":null,"categoryCode":"basic","productName":"밀리의 서재","localeCode":null,"myMenuYn":null,"popupStatus":"0"},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000524","sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezportal.bizmeka.com/portal/welfaremall/main.do?entityId=ezlifecare.bizmeka.com","serviceYn":null,"categoryCode":"basic","productName":"복지몰","localeCode":null,"myMenuYn":null,"popupStatus":"0"},{"popupYn":null,"searchConditionString":null,"productId":null,"sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/yesform/listPopularDocView.do?entityId=ezgroupware.bizmeka.com/yesform","serviceYn":null,"categoryCode":"basic","productName":"업무용 서식","localeCode":null,"myMenuYn":null,"popupStatus":"0"},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000631","sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezportal.bizmeka.com/portal/exito/main.do","serviceYn":null,"categoryCode":"basic","productName":"정부지원사업","localeCode":null,"myMenuYn":null,"popupStatus":"3"},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000625","sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezportal.bizmeka.com/portal/support/linkEdu/main.do","serviceYn":null,"categoryCode":"basic","productName":"법정의무교육","localeCode":null,"myMenuYn":null,"popupStatus":"0"},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000626","sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://biz.giftishow.com/fo_api/sso/bizmeka/ssoLogin.do","serviceYn":null,"categoryCode":"basic","productName":"기프티쇼비즈","localeCode":null,"myMenuYn":null,"popupStatus":"3"},{"popupYn":null,"searchConditionString":null,"productId":null,"sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/ladder/gameView.do?itfSeq=0&otherHost=y&popup=y&entityId=ezgroupware.bizmeka.com/ladder","serviceYn":null,"categoryCode":"basic","productName":"사다리","localeCode":null,"myMenuYn":null,"popupStatus":"2"},{"popupYn":null,"searchConditionString":null,"productId":null,"sproId":null,"sortOrder":0,"entityId":null,"landingUrl":"https://ezportal.bizmeka.com/store/main/storemainView.do","serviceYn":null,"categoryCode":"basic","productName":"서비스스토어","localeCode":null,"myMenuYn":null,"popupStatus":"0"}]}],"userShortCutList":[{"shortcutImg":"shortcut9","shortcutWidth":500,"shortcutUrl":"https://ezkhuman.bizmeka.com/product/doutlnk.do?code=PJ08&entityId=ezkhuman.bizmeka.com/golvwkmng","shortcutName":"출퇴근","ssoEntityId":"ezkhuman.bizmeka.com/golvwkmng","shortcutType":"W","sort_order":1,"shortcutHeight":310},{"shortcutImg":"shortcut8","shortcutWidth":305,"shortcutUrl":"https://ezportal.bizmeka.com/support/calculator/main.do?popup=y","shortcutName":"계산기","ssoEntityId":"","shortcutType":"W","sort_order":2,"shortcutHeight":320},{"shortcutImg":"shortcut12","shortcutWidth":610,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/note/quickWrite.do","shortcutName":"메모","ssoEntityId":"ezgroupware.bizmeka.com/note","shortcutType":"W","sort_order":3,"shortcutHeight":618},{"shortcutImg":"shortcut6","shortcutWidth":380,"shortcutUrl":"https://ezportal.bizmeka.com/support/tenant/user/inviteForm.do","shortcutName":"사용자 초대","ssoEntityId":"","shortcutType":"L","sort_order":4,"shortcutHeight":180},{"shortcutImg":"shortcut2","shortcutWidth":0,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/approval/work/apprWorkForm/listApprForm.do","shortcutName":"기안문 작성","ssoEntityId":"ezgroupware.bizmeka.com/approval","shortcutType":"A","sort_order":5,"shortcutHeight":0}],"menuList":[{"productId":"PRO_000178","portlet_sort":1,"landingUrl":"https://ezwebmail.bizmeka.com/mail/list.do?entityId=ezwebmail.bizmeka.com","productName":"메일","iconClass":"ic_product2"},{"productId":"PRO_000147","portlet_sort":2,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/approval/work/apprlist/listApprTodo.do?entityId=ezgroupware.bizmeka.com/approval","productName":"전자결재","iconClass":"ic_product4"},{"productId":"PRO_000583","portlet_sort":3,"landingUrl":"https://ezkhuman.bizmeka.com/product/outlnk.do?code=PJ02&entityId=ezkhuman.bizmeka.com/golvwkmng","productName":"근태관리","iconClass":"ic_product49"},{"productId":"PRO_000580","portlet_sort":4,"landingUrl":"https://ezkhuman.bizmeka.com/product/basic.do?entityId=ezkhuman.bizmeka.com/basic","productName":"인사","iconClass":"ic_product48"},{"productId":"PRO_000173","portlet_sort":5,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/board/boardItem/listAllBoardItemView.do?entityId=ezgroupware.bizmeka.com/board","productName":"게시판","iconClass":"ic_product3"},{"productId":"PRO_000177","portlet_sort":6,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/planner/calendar.do?entityId=ezgroupware.bizmeka.com/planner","productName":"일정","iconClass":"ic_product5"},{"productId":"PRO_000499","portlet_sort":7,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/todo/listTodoMainView.do?entityId=ezgroupware.bizmeka.com/task","productName":"업무관리","iconClass":"ic_product30"},{"productId":"PRO_000448","portlet_sort":8,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/message/messageListView.do?entityId=ezgroupware.bizmeka.com/message","productName":"쪽지","iconClass":"ic_product21"},{"productId":"PRO_000174","portlet_sort":9,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/customer/customerList.do?customerGroupId=&entityId=ezgroupware.bizmeka.com/customer","productName":"거래처","iconClass":"ic_product9"},{"productId":"PRO_000175","portlet_sort":10,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/vcard/listUserVcard.do?entityId=ezgroupware.bizmeka.com/vcard","productName":"주소록","iconClass":"ic_product7"},{"productId":"PRO_000176","portlet_sort":11,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/addressbook/readAddrbookListByAddrgroup.do?entityId=ezgroupware.bizmeka.com/addressbook","productName":"조직도","iconClass":"ic_product6"},{"productId":"PRO_000545","portlet_sort":12,"landingUrl":"https://ezgroupware.bizmeka.com/groupware/filebox/prsnlDiskView.do?entityId=ezgroupware.bizmeka.com/documentbox","productName":"업무문서함","iconClass":"ic_product40"},{"productId":"PRO_000555","folder_sort":1,"portlet_sort":13,"landingUrl":"https://ezkaccount.bizmeka.com/product/basic.do?entityId=ezkaccount.bizmeka.com/basic","productName":"회계","iconClass":"ic_product41"}],"userImg":null,"groupName":"","tenantName":"(주)드제이","tenantImg":"/companyImage/T55266/T55266_100_1d1f2dd733f74bd3844a7fd7be76506f.png","themeId":"theme01","shortCutList":[{"shortcutImg":"shortcut9","shortcutWidth":500,"user_sort_order":1,"shortcutUrl":"https://ezkhuman.bizmeka.com/product/doutlnk.do?code=PJ08&entityId=ezkhuman.bizmeka.com/golvwkmng","shortcutName":"출퇴근","ssoEntityId":"ezkhuman.bizmeka.com/golvwkmng","shortcutType":"W","userId":"U508869","sort_order":2,"shortcutId":"1791052","shortcutHeight":310},{"shortcutImg":"shortcut8","shortcutWidth":305,"user_sort_order":2,"shortcutUrl":"https://ezportal.bizmeka.com/support/calculator/main.do?popup=y","shortcutName":"계산기","ssoEntityId":"","shortcutType":"W","userId":"U508869","sort_order":3,"shortcutId":"782739","shortcutHeight":320},{"shortcutImg":"shortcut12","shortcutWidth":610,"user_sort_order":3,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/note/quickWrite.do","shortcutName":"메모","ssoEntityId":"ezgroupware.bizmeka.com/note","shortcutType":"W","userId":"U508869","sort_order":4,"shortcutId":"950622","shortcutHeight":618},{"shortcutImg":"shortcut6","shortcutWidth":380,"user_sort_order":4,"shortcutUrl":"https://ezportal.bizmeka.com/support/tenant/user/inviteForm.do","shortcutName":"사용자 초대","ssoEntityId":"","shortcutType":"L","userId":"U508869","sort_order":6,"shortcutId":"492211","shortcutHeight":180},{"shortcutImg":"shortcut2","shortcutWidth":0,"user_sort_order":5,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/approval/work/apprWorkForm/listApprForm.do","shortcutName":"기안문 작성","ssoEntityId":"ezgroupware.bizmeka.com/approval","shortcutType":"A","userId":"U508869","sort_order":7,"shortcutId":"432868","shortcutHeight":0},{"shortcutImg":"shortcut4","shortcutWidth":0,"user_sort_order":99999,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/social/group/listNewsMyGroupView.do","shortcutName":"나의 그룹 새소식","ssoEntityId":"ezgroupware.bizmeka.com/social","shortcutType":"A","sort_order":8,"shortcutId":"432871","shortcutHeight":0},{"shortcutImg":"shortcut1","shortcutWidth":900,"user_sort_order":99999,"shortcutUrl":"https://ezwebmail.bizmeka.com/mail/popup/write.do","shortcutName":"메일작성","ssoEntityId":"ezgroupware.bizmeka.com/approval","shortcutType":"W","sort_order":9,"shortcutId":"432869","shortcutHeight":700},{"shortcutImg":"shortcut5","shortcutWidth":900,"user_sort_order":99999,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/planner/popupQuickWrite.do?popup=y","shortcutName":"일정등록","ssoEntityId":"ezgroupware.bizmeka.com/planner","shortcutType":"W","sort_order":10,"shortcutId":"432873","shortcutHeight":700},{"shortcutImg":"shortcut7","shortcutWidth":900,"user_sort_order":99999,"shortcutUrl":"https://ezgroupware.bizmeka.com/groupware/message/messageNewPopup.do","shortcutName":"쪽지","ssoEntityId":"ezgroupware.bizmeka.com/message","shortcutType":"W","sort_order":11,"shortcutId":"782728","shortcutHeight":700}],"userName":"이동*","gnbUserMenu":[{"popupYn":null,"searchConditionString":null,"productId":"PRO_000178","sproId":null,"sortOrder":1,"entityId":"ezwebmail.bizmeka.com","landingUrl":"https://ezwebmail.bizmeka.com/mail/list.do?entityId=ezwebmail.bizmeka.com","serviceYn":"Y","categoryCode":null,"productName":"메일","localeCode":null,"myMenuYn":null,"popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000147","sproId":null,"sortOrder":2,"entityId":"ezgroupware.bizmeka.com/approval","landingUrl":"https://ezgroupware.bizmeka.com/groupware/approval/work/apprlist/listApprTodo.do?entityId=ezgroupware.bizmeka.com/approval","serviceYn":"Y","categoryCode":null,"productName":"전자결재","localeCode":null,"myMenuYn":null,"popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000177","sproId":null,"sortOrder":3,"entityId":"ezgroupware.bizmeka.com/planner","landingUrl":"https://ezgroupware.bizmeka.com/groupware/planner/calendar.do?entityId=ezgroupware.bizmeka.com/planner","serviceYn":"Y","categoryCode":null,"productName":"일정","localeCode":null,"myMenuYn":null,"popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000173","sproId":null,"sortOrder":4,"entityId":"ezgroupware.bizmeka.com/board","landingUrl":"https://ezgroupware.bizmeka.com/groupware/board/boardItem/listAllBoardItemView.do?entityId=ezgroupware.bizmeka.com/board","serviceYn":"Y","categoryCode":null,"productName":"게시판","localeCode":null,"myMenuYn":null,"popupStatus":null},{"popupYn":null,"searchConditionString":null,"productId":"PRO_000545","sproId":null,"sortOrder":5,"entityId":"ezgroupware.bizmeka.com/documentbox","landingUrl":"https://ezgroupware.bizmeka.com/groupware/filebox/prsnlDiskView.do?entityId=ezgroupware.bizmeka.com/documentbox","serviceYn":"Y","categoryCode":null,"productName":"업무문서함","localeCode":null,"myMenuYn":null,"popupStatus":null}],"agreeProductIds":"PRO_000486,PRO_000510,PRO_000516,PRO_000524,PRO_000482_WEB,PRO_000598,PRO_000626,PRO_000631"}';
+	var menu = $.parseJSON(leftMenu);
+	var portalUrl = 'https://ezportal.bizmeka.com';
+	var ssoUrl = 'https://ezsso.bizmeka.com';
+	var productId = 'PRO_000177';
+	var themeId = menu.themeId;
+	
+	$(document).ready(function () {
+		
+		var userName = menu.userName;
+		var userImg = menu.userImg;
+		var tenantName = menu.tenantName;
+		var tenantImg = menu.tenantImg;
+		var items = [];
+
+		setGnBMenu(menu.gnbMenuCategory, menu.gnbUserMenu);
+		
+		setShortcutMenu(menu.shortCutList);
+		
+		
+		profileImgOnerrorCheck = function(obj) {
+			if ($.browser.msie && $.browser.version < 9) {
+				$(obj).parent().css("background-image", "none");
+				
+			}
+			
+			$(obj).attr("src", ssoUrl+"/images/menu/theme/"+ themeId + "/avatar82.png");
+		}
+		
+		
+		var themeUrl = ssoUrl + "/css/" + (themeId || "theme01") + "/quick_theme.css";
+		$("#page-container").append("<link rel='stylesheet' href='"+themeUrl+"' type='text/css' />");
+		
+		if(menu.userShortCutList != null){
+			userShortCutListSet(menu.userShortCutList);
+		}
+		
+		
+		if(tenantImg == "" || tenantImg == null){
+			var tenant = "<img alt='KT bizmeka EZ' src='" + portalUrl + "/images/common/logo_bizmeka_2.png' />";
+			$("#brand").append(tenant);
+		}else{
+			var tenant = "<img alt='"+tenantName+"'  src='"+portalUrl + tenantImg+"'>";
+			$("#brand").append(tenant);			
+		}
+		
+		
+		$("#userName").append(userName);
+		
+		if(userImg == "" || userImg == null){
+			
+			if($.browser.msie && $.browser.version < 9){
+				$("#userImg").css("background-image","none");
+			}
+			var noImage = "<img alt='"+userName+"' src='"+ssoUrl+"/images/menu/theme/"+ themeId + "/avatar82.png'>";
+			$("#userImg").append(noImage);
+		}else{
+			var userImage = "<img alt='"+userName+"' src='"+portalUrl + userImg+ "' onerror='profileImgOnerrorCheck(this);'" + " >";
+			$("#userImg").append(userImage);
+		} 
+		
+		
+		$("#cusomerSupport").click(function (event) {
+			event.preventDefault();
+			
+			spro.popupOpen(portalUrl+"/support/customer/supportpopup/supportPopupView.do?productId=" + productId, {
+	    		width:1000, 
+	    		height:720
+	    	},"customerSupport");
+		});
+		
+		
+		$("#helpPopup").click(function (event) {
+			event.preventDefault();
+
+			spro.popupOpen(portalUrl + "/help/ko/gw-docs/" + productId + ".html", {
+	    		width:1200, 
+	    		height:720
+	    	},"helpDesk");
+		});
+		
+		$(".btn-allMenu").click(function(){
+			var $slideBar = $("#sidebar");
+			var $slideMinWrapWidth = $slideBar.outerWidth();
+			var $subarea = $("#subarea");
+			var $pageContainer = $("#page-container")
+			var slideBarWidth = 170; 
+			var minGnbMenuWidth = 60;		
+			
+			if ($slideMinWrapWidth == slideBarWidth){				
+				$("#brand").hide()
+					.next("span").css("display", "block");
+				
+				$slideBar.stop().animate({
+					width : minGnbMenuWidth
+				},50,"easeOutQuad").delay();
+				$subarea.stop().animate({
+					left : minGnbMenuWidth
+				},50,"easeOutQuad");				
+				
+				$pageContainer.removeClass("sidebar-visible");				
+	
+				$(".menuTooltip").poshytip('enable');
+				$("#quickWriteSettingDiv").removeClass("openLayer");
+				$.cookie("gnbMenuType", "close", { expires: 1, path: '/', domain: 'bizmeka.com'});
+			}else {				
+				$slideBar.stop().animate({
+					width :   slideBarWidth
+				},50,"easeOutQuad", function() {
+					$("#brand").show()
+						.next("span").hide();
+				});
+				
+				$subarea.stop().animate({
+					left :   slideBarWidth
+				},50,"easeOutQuad");
+				$pageContainer.addClass("sidebar-visible");				
+				$(".home").addClass("none").siblings().removeClass("none");
+				
+				$(".menuTooltip").poshytip('disable');
+				$("#quickWriteSettingDiv").addClass("openLayer");
+				$.cookie("gnbMenuType", "open", { expires: 1, path: '/', domain: 'bizmeka.com'});
+				
+			}
+	
+		});
+		
+		
+		$(".productMenu").poshytip({
+            className: 'tip-twitter',
+            showTimeout: 40,
+            showAniDuration: 300,
+            hideAniDuration: 150,
+            alignTo: 'target',
+            alignX: 'right',
+            alignY: 'center',
+            offsetX: -135,
+            allowTipHover: false,
+            //fade: false,
+            slide: false
+        });
+		
+		
+		$(".otherMenu").poshytip({
+            className: 'tip-twitter',
+            showTimeout: 40,
+            showAniDuration: 300,
+            hideAniDuration: 150,
+            alignTo: 'target',
+            alignX: 'right',
+            alignY: 'center',
+            offsetX: 6,
+            allowTipHover: false,
+            //fade: false,
+            slide: false
+        });
+		
+		
+		$(".shortCutMenu").poshytip({
+            className: 'tip-twitter',
+            showTimeout: 40,
+            showAniDuration: 300,
+            hideAniDuration: 150,
+            alignTo: 'target',
+            alignX: 'center',
+            alignY: 'top',
+            offsetX: -59,
+            offsetY: 7,
+            allowTipHover: false,
+            //fade: false,
+            slide: false
+        });
+		
+		
+		var gnbMenuType = $.cookie("gnbMenuType");
+		
+		if(gnbMenuType == "open"){
+			$(".btn-allMenu").click();
+		}
+		
+		$(window).resize(function() {
+			var containerWidth = $("ul.topmenu").outerWidth(),
+				itemTotalWidth = 0;
+			
+			$("li", "ul.topmenu").each(function() {
+				itemTotalWidth += $(this).outerWidth();
+			});
+
+			if(containerWidth > itemTotalWidth) {
+				$("li.menu-all").css("right", "auto").css("left", (itemTotalWidth - $("li.menu-all").outerWidth()) + "px").show();
+			} else {
+				$("li.menu-all").css("right", "0px").css("left", "auto").show();
+			}
+		}).resize();
+		
+		$("[data-toggle=tooltip]").tooltip({trigger:"hover"});
+	});
+
+	
+	$(window).scroll(function(event){
+		$(".menuTooltip").poshytip('disable');
+		$(".shortcutTooltip").poshytip('disable');
+	 });
+	
+	
+	$("body").mousemove(function(event) {
+		var $slideBar = $("#sidebar");
+		var $slideMinWrapWidth = $slideBar.outerWidth();
+		var slideBarWidth = 170; 
+		
+		if ($slideMinWrapWidth == slideBarWidth){
+			$(".productMenu").poshytip('disable');
+			$(".menuTooltip").poshytip('disable');
+			$(".shortcutTooltip").poshytip('enable');
+		}else{
+			$(".productMenu").poshytip('enable');
+			$(".menuTooltip").poshytip('enable');
+			$(".shortcutTooltip").poshytip('enable');
+		}
+	});
+	
+	
+	userShortCutListSet = function(shorcutList){
+		$("#menuList").empty();
+		$.each(shorcutList, function(index, shortCut) {
+			if(shortCut.shortcutUrl != null){
+				$('<li class ="' + shortCut.shortcutImg + ' productMenu" title="' + shortCut.shortcutName + '">' +
+						'<a href="' + shortCut.shortcutUrl + '" class="icon" data-shortcutType="' + shortCut.shortcutType + '" data-ssoEntityId="' + shortCut.ssoEntityId + '" data-shortcutWidth="' + shortCut.shortcutWidth + '" data-shortcutHeight="' + shortCut.shortcutHeight + '">' +
+							'<span class="quick_product">' + shortCut.shortcutName + '</span>' +
+						'</a>' +
+					'</li>').appendTo("#menuList");
+			}
+		});
+		
+		$("a", "#menuList").click(function(event) {
+			event.preventDefault();
+			
+			var $anchor = $(this);
+			var shortcutType = $anchor.attr("data-shortcutType"),
+				shortcutWidth = $anchor.attr("data-shortcutWidth"),
+				shortcutHeight = $anchor.attr("data-shortcutHeight"),
+				ssoEntityId = $anchor.attr("data-ssoEntityId"),
+				shortcutUrl = $anchor.attr("href");
+			
+			var url = shortcutUrl;
+			if(url.indexOf("inviteForm") > -1) {
+				url = url.replaceAll("inviteForm", "invitePopupForm");
+				shortcutHeight = Number(shortcutHeight) + 20;
+				shortcutWidth = Number(shortcutWidth) - 20;
+			}
+			
+			url += (url.indexOf("?") > -1 ? "&" : "?") + "entityId=" + ssoEntityId;	
+			
+			if(shortcutType == "W" || shortcutType == "L") {  
+				var cw=screen.availWidth;     
+				var ch=screen.availHeight;    
+				var sw=shortcutWidth;
+				var sh=shortcutHeight;
+				var ml=(cw-sw)/2;
+				var mt=(ch-sh)/2;
+				window.open(url, "_blank",'width='+sw+',height='+sh+',top='+mt+',left='+ml+',resizable=yes,scrollbars=yes');
+			} else if(shortcutType == "A") {  
+				location.href = url;
+			}
+		});
+	}
+	
+	
+	function menuClick(event, menuInfo) {
+		event.preventDefault();
+
+		var url = $(this).attr("href"),
+		$menu = $(this).closest("li");
+		var productId = $menu.attr("data-productId");
+		
+		if(productId && menu.agreeProductIds.match(productId)){
+			spro.isAgreedRemote(productId, url);
+		}else{
+			if(menuInfo.categoryCode == "basic") {
+				switch($menu.attr("data-popupStatus")) {
+					case "0" : location.href = url;
+						break;
+					case "1" : spro.popupOpen(url , {width:796, height:546});
+						break;
+					case "2" : spro.popupOpen(url , {width:910, height:710});
+						break;
+					case "3" :
+						break;
+				}
+			}else{
+				location.href = url;
+			}
+		}
+	}
+	
+	function setGnBMenu(gnbMenu, gnbUserMenu) {
+		var $menuContainer = $("div.menu-all-wrap"),
+			$buttonContainer = $("div.btn-wrap", $menuContainer);
+
+		var $allMenuContainer = $("ul.menuset");
+   		$.each(gnbMenu, function(i, menu){
+   			var $category = $("#tmplGnBMenu").tmpl(menu).appendTo($allMenuContainer);
+			
+			
+			$("a", $category).click(function(event){
+				menuClick.apply(this, [event, menu]);
+			});
+			
+   		});
+
+		var $allMenuLi = $("#btnToggleGNBMenu").parent();
+		$.each(gnbUserMenu, function(i, menu) {
+			var $menu = $("#tmplGnBUserMenu").tmpl(menu).insertBefore($allMenuLi)
+							.children().click(function(event){
+								menuClick.apply(this, [event, menu]);
+							});
+
+			if(menu.productId == productId){
+				$menu.addClass("on");
+			}
+		});
+		
+		$("#btnToggleGNBMenu").click(function(event) {
+			if($menuContainer.is(":visible")) {
+				$menuContainer.hide();
+				$("#btnToggleGNBMenu").parent().removeClass("on");
+				$("div.bg-shade").hide();
+			} else {
+				$menuContainer.show();
+				$("#btnToggleGNBMenu").parent().addClass("on");
+				$("div.bg-shade").show();
+			}
+		});
+		
+		
+		var $searchCondition = $("#divGnBSearch");
+		$("#btnGnBSearch").click(function(event) {
+			if($searchCondition.is(":visible")) {
+				
+			} else {
+				$searchCondition.show();
+				$("input[name=employeeSearchWord]", $searchCondition).focus();
+			}
+		});
+		
+		$("body").click(function(event) {
+			var btn = $("#btnGnBSearch").get(0),
+				container = $searchCondition.get(0);
+			if((event.target == btn || $(event.target).closest("a").get(0) == btn) ||
+					$(event.target).closest("div.search").get(0) == container) {
+				
+			} else {
+				$searchCondition.hide();
+			}
+		});
+		
+		
+		$('input[name=employeeSearchWord]').keypress(function(event) {
+			if(event.which == '13') {
+				$("#employeeSearchButton").trigger("click");
+				return false;
+			}
+		});
+		
+		
+		$("#employeeSearchButton").click(function(event) {
+			var searchWord = $('input[name=employeeSearchWord]', $searchCondition).val();		
+			if(searchWord == null || searchWord.length < 2) {
+				alert("2자이상 입력하세요.");
+			}else{
+				$.get("/portal/menu/searchUser.do?searchWord=" + encodeURIComponent(searchWord))
+					.done(function(result) {
+						var $ul = $("#employeeSearchDiv").children("ul").empty();
+						if(result) {
+							var users = $.parseJSON(result).users;
+							if(users.length > 0) {
+								$.each(users, function(i, user) {
+									user.themeId = themeId;
+									var $user = $("#tmplSearchUser").tmpl(user).appendTo($ul);
+									if(!user.profileImg && $.browser.msie && $.browser.version < 9) {
+										$("span.per2", $user).css("background-image", "none");
+									}
+								});
+							} else {
+								$('<li>해당하는 데이터가 없습니다.</li>').appendTo($ul);
+							}
+						} else {
+							$('<li>해당하는 데이터가 없습니다.</li>').appendTo($ul);
+						}
+
+		  				$("#employeeSearchDiv").show();
+		  			})
+		  			.fail(function(xhr) {
+		  				var json = $.parseJSON(xhr.responseText);
+		  				alert(json.errMsg);
+		  			});
+			}			
+		});
+		
+		
+		mainUserSearchDivClose = function() {
+			$("#employeeSearchDiv").hide();
+		}
+		
+	}
+	
+	
+	
+	function setShortcutMenu() {
+		$("#shortCutView").click(function(e){
+			e.preventDefault();
+			$("#quickWriteSettingDiv").toggle();
+		});
+		
+		$("body").click(function(event){
+			var $container = $(event.target).closest("#quickWriteSettingDiv");
+			if(!(event.target == $("#shortCutView").get(0) || $(event.target).closest("#shortCutView").is("*"))	// 바로가기 설정 버튼
+				&& !$container.is("*")) {
+				$("#quickWriteSettingDiv").hide();
+			}
+		});
+		
+		var productMenuHeight = "170";
+		$("#btn-up").click(function(){
+			$("#menuList").stop(true,true);
+			var topHeight = parseInt($("#menuList").css("margin-top"));
+		    if( topHeight < 0 ){
+		    	$("#menuList").animate({"margin-top":"+=" + productMenuHeight + "px"},500);
+		    }
+		});
+		
+		$("#btn-down").click(function(){
+			$("#menuList").stop(true,true);
+			var menuDivHeight = $("#menuList").height();
+			var topHeight = parseInt($("#menuList").css("margin-top"));
+			var productHeight = parseInt(($("#menuList li").length)*-50);
+			var resizeHeight = (document.body.clientHeight-285);
+			var bottomHeight = parseInt($("#menuList").css("margin-bottom"));
+			var lastHeight = topHeight + (-resizeHeight)
+			if( -resizeHeight < productHeight ){return;}
+		    if( -menuDivHeight < lastHeight ){
+		    	$("#menuList").animate({"margin-top":"-=" + productMenuHeight + "px"},500);
+		    }
+		});
+		
+		$.each(menu.shortCutList, function(i, shortcut) {
+			if("" != "P" || shortcut.shortcutImg != 'shortcut6') {
+				$("#tmplShortcutMenu").tmpl(shortcut).appendTo("#shortcutSettingFormUl")
+			}
+		});
+		
+		//바로가기 링크 클릭
+		$("#shortcutSettingFormUl > li > a.firstA").click(function(event) {
+			var quickWriteLi = $(this).parent();
+			
+			
+			
+			var url = quickWriteLi.attr("data-shortcut-url");
+			
+			if(url) {
+				var entityId = $(this).attr("data-entity-id");
+				
+				if(entityId && !quickWriteLi.hasClass("shortcut5")) {
+					if(url.indexOf("?") > -1) {
+						url += "&entityId=" + entityId;	
+					} else {
+						url += "?entityId=" + entityId;
+					}
+				}
+				
+				var shortcutType = quickWriteLi.attr("data-shortcut-type");
+				var shortcutName = $(this).attr("data-original-title");
+				var shortcutWidth = quickWriteLi.attr("data-shortcut-width");
+				var shortcutHeight = quickWriteLi.attr("data-shortcut-height");
+				
+				if(shortcutType == "L" && !quickWriteLi.hasClass("shortcut6")) {  
+					spro.showModalFrame(url, undefined, function(result) {}, {
+						title : shortcutName,
+						width : shortcutWidth,
+						height : shortcutHeight,
+						icon:"modal-title-note"
+					});
+				} else if(shortcutType == "W" || quickWriteLi.hasClass("shortcut6")) {  
+					spro.popupOpen( url , {width:shortcutWidth, height:shortcutHeight, callback:function(result) {
+						if(result){
+							if(result.service == 'calendar'){
+								location.href = "https://ezgroupware.bizmeka.com/groupware/planner/calendar.do?mode=create"
+							}
+						} 
+					}}, "_blank");
+				} else if(shortcutType == "A") {  
+					location.href = url;
+				}
+			}
+		});
+		
+ 		//선택(체크) 클릭
+		$("#shortcutSettingFormUl > li > a.lastA").click(function(event) {
+			var shortcutSettingFormLi = $(this).parent();
+			
+			if(shortcutSettingFormLi.hasClass("selected")) {
+				shortcutSettingFormLi.removeClass("selected");
+			} else {
+				shortcutSettingFormLi.addClass("selected");
+			}
+		});
+ 		
+		
+ 		$("#shortcutSettingSaveButton").click(function(event) {
+			var shortcutIds = []; 
+			$("#shortcutSettingFormUl > li").each(function() {
+				if($(this).hasClass("selected")) {
+					shortcutIds.push($(this).attr("data-shortcut-id"));
+				}
+			});
+			
+			$.ajax({
+	  			url : "/portal/menu/shortcutSetting.do",
+	  			data : {shortcutIds : shortcutIds.join(",")},
+	  			type : "post",
+	  			success : function(result) {
+	  				var json = $.parseJSON(result);
+	  				userShortCutListSet(json.shortCutList);
+	  				
+	  				$("#shortcutSettingCancelButton").trigger("click");
+	  			},
+	  			error : function() {}
+	  		});
+		});
+ 
+		$("#shortcutSettingCancelButton").click(function(event) {
+			$(document.body).trigger("click");
+		});
+	}
+})(jQuery);
+</script>
+
+
+<script id="tmplGnBUserMenu" type="text/jquery-template">
+	<li data-productId="${productId}" data-entityId="${entityId}" data-serviceYn="${serviceYn}">
+		<a href="${landingUrl}">${productName}</a>
+	</li>
+</script>
+
+<script id="tmplGnBMenu" type="text/jquery-template">
+<li>
+	<h2>${categoryName}</h2>
+	<ul>
+		{{each(i, menu) menuList}}
+		<li data-productId="${menu.productId}" data-categoryCode="${categoryCode}"
+			{{if menu.categoryCode == 'basic'}}
+				data-popupStatus="${menu.popupStatus}"
+			{{else}}
+				data-entityId="${menu.entityId}" data-serviceYn="${menu.serviceYn}"
+			{{/if}}
+		>
+			<a href="${menu.landingUrl}">${menu.productName}</a>
+		</li>
+		{{/each}}
+	</ul>
+</li>
+</script>
+
+<script id="tmplSearchUser" type="text/jquery-template">
+	<li>
+		<span class="per2">
+			{{if profileImg}}
+				<img src="https://ezportal.bizmeka.com${profileImg}" alt="" onerror="profileImgOnerrorCheck(this);" />
+			{{else}}
+				<img src="https://ezportal.bizmeka.com/images/placeholders/avatars/avatar82/${themeId}/avatar82.png" alt="" />
+			{{/if}}
+		</span>
+		<span class="name-team">
+			<strong onclick="spro.showUserContextMenu(this, '${userId}', 'bottom');" style="cursor: pointer">
+				${userName} ${jobTitleName} {{if jobDutyName}}${jobDutyName}{{/if}}
+			</strong>
+			${groupName}
+		</span>
+		<span class="info">
+			<span class="phone">${mobile} /</span>
+			<span class="tel">${officePhoneNo}</span>
+		</span>
+	</li>
+</script>
+
+<script id="tmplShortcutMenu" type="text/jquery-template">
+	<li class="${shortcutImg}{{if userId}} selected{{/if}}" data-shortcut-url="${shortcutUrl}" data-shortcut-type="${shortcutType}" data-shortcut-id="${shortcutId}" data-shortcut-width="${shortcutWidth}" data-shortcut-height="${shortcutHeight}">
+		<a href="#a" class="icon firstA" data-toggle="tooltip" title="${shortcutName}" data-entity-id="${ssoEntityId}"></a><a href="#a" class="lastA"><i class="fa fa-check"></i></a>
+	</li>
+</script>
+
+<div class="bg-shade none"></div>
+
+<!-- main-header -->
+<div id="main-header">
+	<div class="logo">
+
+	</div>
+	<ul class="topmenu">
+		<li class="menu-all"><a id="btnToggleGNBMenu" href="#" data-toggle="tooltip" data-placement="left" title="전체기능"><span class="blind">전체기능</span></a></li>
+	</ul>
+	<div class="etc">
+		<div class="iconset">
+			<a href="#a" id="btnGnBSearch" data-toggle="tooltip" data-placement="bottom" title="직원검색"><i class="fa fa-search"><span class="blind">직원검색</span></i></a>
+			<a href="javascript:void(0);" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="로그아웃"><i class="fa fa-power-off"><span class="blind">로그아웃</span></i></a>
+		</div>
+
+		<div id="divGnBSearch" class="search" style="display:none;">
+			<input type="text" id="employeeSearchWord" name="employeeSearchWord" placeholder="검색어를 입력하세요.">
+			<label for="employeeSearchWord">직원검색</label>
+			<button type="button" id="employeeSearchButton"><i class="fa fa-search"></i><span class="blind">검색</span></button>
+			<div id="employeeSearchDiv" class="search-list user-list none">
+				<ul></ul>
+				<span class="close"><button class="close" type="button" onclick="mainUserSearchDivClose()"><i class="blind">닫기</i></button></span>
+			</div>
+			<form id="totalSearchForm">
+				<input type="hidden" name="query"/>
+			</form>
+		</div>
+
+	</div>
+</div>
+
+<div class="menu-all-wrap none">
+	<ul class="menuset"></ul>	
+</div>
+
+
+
+
+<div id="sidebar">
+	<div class="sidebar-content">
+		<h1>
+			<a href="https://ezportal.bizmeka.com/portal/main/main.do" class="sidebar-brand otherMenu menuTooltip" title="홈 화면">
+				<span id="brand" class="brand none"></span>
+				<span class="home">HOME</span>
+			</a>
+		</h1>
+		<a href="javascript:void(0);" class="btn-allMenu otherMenu menuTooltip" title="바로가기"><span class="icon"></span>바로가기</a>
+		<div class="info-logout">
+			<ul class="user-info">
+				<a href="https://ezportal.bizmeka.com/support/myinfo/myinfo/readMyinfoView.do"><li id="userImg" class="per2"></li></a>
+				<li class="user"><strong id="userName"></strong></li>
+			</ul>
+			<div class="snc-logout">
+				<a href="https://ezportal.bizmeka.com/support/myinfo/myinfo/readMyinfoView.do" class="my-info">내정보</a>
+				<a href="javascript:void(0);" onclick="logout()"  data-toggle="" class="enable-tooltip" data-placement="bottom">로그아웃</a>
+			</div>
+		</div>
+		<!-- START 바로가기 버튼  [2016.05.11일 추가 반영분] -->
+		<div class="info-setting">
+			<ul>
+				<li class="productMenu menuTooltip" title="바로가기 설정" >
+					<a id="shortCutView" href="javascript:void(0);"><span>바로가기 설정</span></a>
+				</li>
+			</ul>
+		</div>
+
+		<h2 class="blind">메인 네비게이션 영역</h2>	
+		<div class="sidebar-nav">
+			<ul id="menuList" class="gnb_quickview"></ul>
+		</div>
+		<div class="sidebar-nav-custom">
+			<div class="btn-updown">
+				<a href="javascript:void(0);" id="btn-up" class="btn-up"><i></i></a>
+				<a href="javascript:void(0);" id="btn-down" class="btn-down"><i></i></a>
+			</div>
+			<div class="help-setting">
+				<ul>
+					<li><a id="helpPopup" href="#a" class="ic_help otherMenu menuTooltip" title="도움말"><span></span>도움말</a></li>
+					<li><a id="cusomerSupport" href="#a" class="ic_setting otherMenu menuTooltip" title="고객지원"><span></span>고객지원</a></li>
+				</ul>
+			</div>
+		</div>								
+	</div>
+</div>
+
+<div id="quickWriteSettingDiv" class="bubble_quick_layer2" style="display:none;">
+	<h2><i class="fa fa-list-alt"></i>바로가기 설정</h2>
+	<ul id="shortcutSettingFormUl" class="ui-sortable"></ul>
+	<div class="clearboth"></div>
+	<div class="ui-sortable_btnarea" style="text-align:center;">
+	 	<button id="shortcutSettingSaveButton" type="button" class="btn btn-color7 br">저장</button>
+		<button id="shortcutSettingCancelButton" type="button" class="btn btn-color7 br">취소</button>
+	</div>
+	<div class="mt15 mb10 pt10 info">
+		<p class="check"><i class="fa fa-question-circle textcolor11 mr5"></i>설정 버튼을 체크하면 왼쪽 바로가기 영역에 추가됩니다.</p>
+	</div>
+</div>
+
+		
+
+
+
+
+ 
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/css/planner.css" />
+<link type="text/css" rel="stylesheet" href="/css/planner/calendar.css" />
+<script type="text/javascript">
+(function($) {
+	
+	var categoryList = [];	
+	
+		categoryList.push({categoryId:"1", categoryName:"업무", color:"event_class_type6"});
+	
+		categoryList.push({categoryId:"2", categoryName:"중요", color:"event_class_type1"});
+	
+		categoryList.push({categoryId:"3", categoryName:"출장", color:"event_class_type16"});
+	
+		categoryList.push({categoryId:"4", categoryName:"휴가", color:"event_class_type13"});
+	
+		categoryList.push({categoryId:"5", categoryName:"영업활동", color:"event_class_type18"});
+	
+	
+	function getCategoryColor(categoryId) {
+		var color = "";
+		$.each(categoryList, function(n, category) {
+			if(categoryId == category.categoryId) {
+				color = category.color;
+				return false;
+			}
+		});
+		return color;
+	}
+	
+	function addExternalEvent(categoryId, title, eventTemplateId) {
+		var eventInfo = { type:"category", categoryId:categoryId, title:title, color:getCategoryColor(categoryId), eventTemplateId:eventTemplateId };
+		var tpl = '<div class="external-event ${color}"><a href="#${eventTemplateId}">${title}<i class="icon del2" style="cursor:pointer"></i></a></div>';
+		var $externalEvent = $.tmpl(tpl, eventInfo)
+								.data('eventInfo', eventInfo);
+		
+		$("#divExternalEvents").append($externalEvent);
+           
+		$externalEvent.draggable({
+			zIndex: 999,
+			helper: "clone",
+			appendTo :"body",
+			revert: true,
+			revertDuration: 0
+		});
+	}
+	
+	function setExternalCategory() {
+		var tpl = '<li><a href="javascript:void(0)"><span class="event_color_button ${color}"></span><span class="ca">${categoryName}</span></a></li>';
+		var $form = $("#fmCreateExternalEvent");
+		var $spanChose = $form.children("a.category").children("span.event_color_button");
+		
+		var $ul = $form.children("ul").empty();
+		$.each(categoryList, function(n, category) {
+			var $category = $.tmpl(tpl, this).appendTo($ul)
+				.click(function() {
+					$spanChose.attr("class" , "event_color_button " + category.color)
+						.data("categoryId", category.categoryId);
+				});
+			
+			if(n == 0)
+				$category.children("a").click();
+		});
+		
+		$("a.input-group-addon", $form).click(function(){
+			var $input = $("input[name=addEvent]", $form);
+			var title = $.trim($input.val());
+			if(!title){
+			    alert("제목을 입력하세요.");
+			    return;
+			}
+			
+			var eventTemplate = {categoryId:$spanChose.data("categoryId"), title:title};
+			$("body").loading();
+			$.post(spro.getContextRoot() + "/groupware/planner/eventTemplate/create.do", eventTemplate)
+				.done(function(eventTemplateId) {
+					addExternalEvent(eventTemplate.categoryId, eventTemplate.title, eventTemplateId);
+				})
+				.fail(function(xhr) { alert(xhr.responseJSON.errMsg); })
+				.always(function() { $("body").loaded(); });
+		});
+		
+		$("input[name=addEvent]", $form).keypress(function(event) {
+			if(event.which == 13) {
+				$("a.input-group-addon", $form).click();
+			}
+		});
+	}
+	
+	$(function() {
+		
+		var showBanner = "" ;
+    	if("Y"==showBanner){
+	    	/*var $banner = $('<span class="planner-banner-wrap btn"><img src="/images/common/banner_share_planner.png" onClick="showBannerWebDisk();"></span>');
+	    	var $header = $("div.con-header")
+	    		$children = $header.children();
+	    	if($children.size() > 1) {
+	    		$children.eq(1).prepend($banner);
+	    	} else {
+	    		$children.eq(0).after($banner);
+	    	}
+	    	*/
+    	}
+    	
+    	showBannerWebDisk = function(){
+    		spro.popupOpen(
+    				"/support/popup/popupImageBanner.do?svcId=schedule"
+    				,{width:960, height:720, resizable:false, callback:function(result) {} }
+    				,"사용자 초대"
+    		);
+			/* spro.showModalFrame(
+					"/support/popup/popupImageBanner.do?svcId=schedule", 
+					function(obj) {
+						
+					}, 
+					options={title:"사용자 초대",width:983,height:730,closeButton : true}
+			); */
+		}
+    	
+    	
+		spro.activeSubmenu("conferenceRoomManager", "#subarea");
+		
+		$("button.btnCreateSchedule").click(function() {
+			if(!$.fullCalendar) {
+				location.href = "/groupware/planner/calendar.do?mode=create";
+			} else {
+				var date = $.fullCalendar.moment();
+				date.minute( (Math.floor(date.minute() / 30) * 30) + 30);	// 현재시간보다 30분 더함
+	
+				var scheduleInfo = {startDate:date, endDate:date.clone().add(30, "minute")};
+				//alert(JSON.stringify(scheduleInfo));
+				$("#calendar").trigger("calendar:write", [null, scheduleInfo]);//calendar:quickWrite
+			}
+		});
+		
+		setExternalCategory();
+		
+		$("#divExternalEvents").children("div.external-event").each(function() {
+			var categoryId = $(this).attr("data-categoryId"),
+				title = $(this).text(),
+				eventTemplateId = $(this).attr("data-templateId");//$(this).children("a").attr("title");
+			$(this).draggable({
+				zIndex: 999,
+				helper: "clone",
+				appendTo :"body",
+				revert: true,
+				revertDuration: 0
+			}).data("eventInfo", {type:"category", categoryId:categoryId, title:title, color:getCategoryColor(categoryId), eventTemplateId:eventTemplateId});
+		});
+		
+		$("#divExternalEvents").delegate(".del2", "click", function() {
+			var $eventTemplate = $(this).parents("div.external-event:first"),
+				eventInfo = $eventTemplate.data("eventInfo");
+
+			$("body").loading();
+			$.post(spro.getContextRoot() + "/groupware/planner/eventTemplate/delete.do", {eventTemplateId:eventInfo.eventTemplateId})
+				.done(function(result){ $eventTemplate.remove(); })
+				.fail(function(xhr) { alert(xhr.responseJSON.errMsg); })
+				.always(function() { $("body").loaded(); });
+		});
+		
+		$("a", "#externalEventsGroup, #externalEventsPersonalGroup").click(function(event) {
+			event.preventDefault();
+			
+			var $anchor = $(this),
+				$container = $anchor.parent().parent();
+			var groupType = "";
+			switch($container.attr("id")) {
+				case "externalEventsGroup" : groupType = "group"; break;
+				case "externalEventsPersonalGroup" : groupType = "personalGroup"; break;
+			}
+			
+			if(groupType) {
+				callGroupCalendar($anchor.attr("href"), groupType);
+				activeSourceUI(groupType, $anchor.text());
+			}
+		});
+		
+		$("#externalEventsGroup").children("div.external-event").draggable({
+			zIndex: 999,
+			helper: "clone",
+			appendTo :"body",
+			revert: true,
+			revertDuration: 0,
+			start : function() {
+				if(!$(this).data("eventInfo")) $(this).data("eventInfo", {type:"group"});
+			}
+		});
+		
+		$("#externalEventsPersonalGroup").children("div.external-event").draggable({
+			zIndex: 999,
+			helper: "clone",
+			appendTo :"body",
+			revert: true,
+			revertDuration: 0,
+			start : function() {
+				if(!$(this).data("eventInfo")) $(this).data("eventInfo", {type:"personalGroup"});
+			}
+		});
+		
+		$("div.plannerMenu > ul").children().children("a").click(function(event) {
+			event.preventDefault();
+
+			var $anchor = $(this);
+			if($("i", $anchor).hasClass("fa-angle-up")) {	// show
+				$anchor.next("div").slideDown().end()
+					.children("i").removeClass("fa-angle-up")
+						.addClass("fa-angle-down");
+			} else {	// hide
+				$anchor.next("div").slideUp().end()
+					.children("i").addClass("fa-angle-up")
+						.removeClass("fa-angle-down");
+			}
+			
+		});
+		
+		$("#btnPersonalGroupSetting").click(function(event) {
+			event.stopPropagation();
+			
+			var $modal = spro.showModalFrame("/groupware/addressbook/addressbookPersonalGroupBase.do?popup=y", undefined, undefined, {
+				title : "개인그룹 관리",
+				width : 900,
+				height : 505
+			});
+			
+			$modal.on("hide.bs.modal", function() {
+				$("body").loading();
+				location.reload();
+			});
+		});
+		
+		
+	});
+	
+	rightPanelAddFormLink = function() {
+		
+		// 일정 등록
+	};
+
+    openServiceMenu = function(menuCd) {
+        var poUrl = spro.getWebAppPath("po");
+        var gwUrl = spro.getWebAppPath("gw");
+        var prdId = "PRO_000177";
+        
+        if(menuCd == 'M'){
+            spro.popupOpen(poUrl + '/help/ko/gw-docs/'+prdId+'.html',{width:1200, height:720});
+        } else if(menuCd == 'F'){
+            window.open(poUrl + "/support/customer/faq/listFaqView.do?faqProductId="+prdId);
+        } else if(menuCd == 'T'){
+            spro.popupOpen(poUrl + '/html/userTipNew/index.html?page=html%2Fsd-docs%2Fsd_01.html',{width:1300, height:720});
+        } else if(menuCd == 'Q'){
+            window.open(poUrl + "/support/myinfo/mtom/listMyinfoMtomView.do");
+        } else if(menuCd == 'S'){
+            window.open(poUrl + "/portal/search/searchMainView.do");
+        }
+    }
+})(jQuery);
+</script>
+<div id="subarea">
+	<div class="leftmenu">
+		<h1 class="blind">레프트메뉴영역</h1>				
+		<div class="leftmenu-top"><h2><a href="/groupware/planner/calendar.do">일정</a></h2>
+            <a href="#a" class="on" data-toggle="dropdown"><i class="icon customer-support"></i></a>
+            <div class="bubble dropdown-menu customer-support ">
+                <h2>고객지원</h2>
+                <ul>
+                    <li><a href="javascript:openServiceMenu('M');"><i class="icon support_manual"></i>메뉴얼</a></li>
+                    <li><a href="javascript:openServiceMenu('F');"><i class="icon support_FAQ"></i>FAQ</a></li>
+                    <li><a href="javascript:openServiceMenu('T');"><i class="icon support_tip"></i>활용팁</a></li>
+                    <li><a href="javascript:openServiceMenu('Q');"><i class="icon support_contact"></i>1:1문의</a></li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+			
+		<div class="leftmenu-inner-scroll planner">
+ 			<div class="btn-wrap-leftMenu row">
+				<button type="button" class="btn btn-color7 w100p btnCreateSchedule">일정등록</button>
+			</div>
+			
+			<div class="planner pl10 pr10">
+				<div class="block-section">
+					<div class="text-muted tipinfo"><small><i class="fa fa-arrows mr5"></i>달력으로 Drag and Drop</small>	</div>
+					<form id="fmCreateExternalEvent" onsubmit="return false;" class="input-group">
+							<a href="javascript:void(0)" data-toggle="dropdown" class="btn dropdown-toggle category event w50">
+								<span class="event_color_button" id="fc-event-select-span"></span>
+								<span class="caret"></span>
+								<span class="none">일정범주선택</span>
+							</a>
+							<ul class="dropdown-menu dropdown-custom cate-cho text-left"></ul>
+							<input type="text" name="addEvent" class="form-control addEvent ml3" placeholder="아이템 추가" title="아이템 추가">
+							<div class="input-group-btn">
+								<a href="javascript:void(0)" class="btn input-group-addon btn-color5 br"><i class="fa fa-plus"></i><span class="none">일정템플릿추가</span></a>
+							</div>
+					</form>
+				</div>
+				<div id="divExternalEvents">
+					
+				</div>
+				<div class="plannerMenu">
+					<ul>
+						<li class="current">
+							<a href="#" class="sidebar-nav-menu open">My Team<i class="fa fa-angle-down"></i></a>
+							<div id="externalEventsGroup">
+								
+									
+										
+											<div class="external-event event_class_team"><a href="G226338" title="개발2팀">개발2팀</a></div>
+										
+									
+									
+								
+							</div>
+						</li>
+						<li>
+							<a href="#" class="sidebar-nav-menu open">My Group
+								<button class="fa fa-cog settings" id="btnPersonalGroupSetting"><span>설정</span></button>
+								<i class="fa fa-angle-down"></i>
+							</a>
+							<div id="externalEventsPersonalGroup">
+								
+									
+									
+										<div>등록된 My Group이 없습니다.</div>
+									
+								
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<ul class="menulist">
+				<li data-submenu="import">
+					<a href="/groupware/planner/imExport/importSchedule.do" class="sidebar-nav-menu">Import</a>
+				</li>
+				<li data-submenu="export">
+					<a href="/groupware/planner/imExport/exportSchedule.do" class="sidebar-nav-menu">Export</a>
+				</li>
+
+
+
+				<li data-emItem="planner.manage">
+					<a href="#" class="sidebar-nav-menu">관리자 메뉴<i class="fa fa-chevron-up"></i></a>
+					<ul>
+						<li data-submenu="configuration"><a href="/groupware/planner/config/view.do">공통 설정</a></li>
+						<li data-submenu="conferenceRoomManager"><a href="/groupware/facility/admin/conferenceRoomManage.do?">회의실 관리</a></li>
+						<li data-submenu="facilityManager"><a href="/groupware/facility/admin/facilityManage.do?">공용설비 관리</a></li>
+						<li data-submenu="holidayManager"><a href="/groupware/planner/holiday/list.do">휴일 관리</a></li>
+						<li data-submenu="categoryManager"><a href="/groupware/planner/category/list.do">범주관리</a></li>
+
+						<li data-submenu="deleteManager"><a href="/groupware/planner/calendar/deleteAllScheduleForm.do">일괄삭제</a></li>
+
+						<li>
+							<div class="btn-wrap-leftMenu row">
+								<button class="btn btn-color7 br w49p fleft" onclick="javascript:location.href='/groupware/planner/imExport/importScheduleAdmin.do'" type="button">
+									<i class="fa fa-download mr5"></i> Import
+								</button>
+								<button class="btn btn-color7 br w49p fright" onclick="javascript:location.href='/groupware/planner/imExport/exportScheduleAdmin.do'" type="button">
+									<i class="fa fa-upload mr5"></i> Export
+								</button>
+							</div>
+						</li>
+					</ul>
+				</li>
+
+			</ul>
+						
+		</div>
+	</div>
+</div>
+		<div id="main-container">
+			
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<script type="text/javascript" src="/js/jquery-validation-1.13.0/dist/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="/js/spro.validator.js"></script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+<script type="text/javascript"> 
+var managePage = "/groupware/facility/admin/conferenceRoomManage.do";
+
+(function($) {
+	$(document).ready(function(){
+		$("#viewDiv").loading();
+		$("#viewDiv").load("/groupware/facility/admin/facilityList.do?categoryId=FC0000000", function() {
+			$("#viewDiv").loaded();
+		});
+		
+		$("a", "#facilityList").click(function( event) {
+			event.preventDefault();
+			
+			$("#viewDiv").loading();
+			$("#viewDiv").load("/groupware/facility/admin/facilityView.do?facilityId=" + $(this).attr("data-facilityId"), function() {
+				$("#viewDiv").loaded();
+			});
+		});
+		
+		$("button.btnNew", "#facilityListDiv").click(function() {
+			$("#viewDiv").loading();
+			$("#viewDiv").load("/groupware/facility/admin/facilityForm.do?categoryId=FC0000000", function() {
+				$("#viewDiv").loaded();
+			});
+		});
+	});
+})(jQuery);
+</script>
+ 
+<h1 class="blind">회의실 관리</h1>
+	
+<div class="con-header bdr-b">
+	<h2>회의실 관리</h2>
+	<div id="navText" class="breadcrumb-line"></div>
+</div>
+
+<div class="content-wrap pt20">
+	
+	<div class="row">
+		<div class="w25p fleft">
+			<div id="facilityListDiv">
+				<div class="aside-list">
+					<h3>회의실 목록</h3>
+					
+						<ul id="facilityList">
+							
+								<li>
+									<a href="#" class="aTitle" data-facilityId="58560281">
+										<i class="fa fa-chevron-right"></i>2층 회의실
+									</a>
+								</li>
+							
+								<li>
+									<a href="#" class="aTitle" data-facilityId="58560333">
+										<i class="fa fa-chevron-right"></i>3층 회의실
+									</a>
+								</li>
+							
+						</ul>
+					
+					<div>
+						<button type="button" class="btn btn-block btn-color5 br mb10 mt10 btnNew">회의실 등록</button>
+					</div>
+				</div>
+			</div>		
+		</div>
+		<div class="w75p fleft pl15">
+			<div id="viewDiv"></div>
+		</div>
+	</div>
+</div>
+
+		</div>
+	</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-101552986-1', {'user_id': 'U508869'});
+</script>
+
+</body>
+</html>

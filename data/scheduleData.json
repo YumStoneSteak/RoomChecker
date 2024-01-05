@@ -1,0 +1,82 @@
+{
+  "timestamp": 1704420840830,
+  "data": [
+    {
+      "date": "01.02",
+      "roomName": "2층 회의실",
+      "meetingTime": "11:00 ~ 12:00",
+      "startTime": "11:00",
+      "endTime": "2:00",
+      "title": "사업기획 회의",
+      "registrant": "유지원",
+      "registrationDate": "2024.01.02 14:09",
+      "department": "R&D팀"
+    },
+    {
+      "date": "01.02",
+      "roomName": "2층 회의실",
+      "meetingTime": "14:30 ~ 15:30",
+      "startTime": "14:30",
+      "endTime": "5:30",
+      "title": "본부장님-팀장 회의",
+      "registrant": "유지원",
+      "registrationDate": "2024.01.02 14:09",
+      "department": "R&D팀"
+    },
+    {
+      "date": "01.02",
+      "roomName": "3층 회의실",
+      "meetingTime": "16:00 ~ 16:30",
+      "startTime": "16:00",
+      "endTime": "6:30",
+      "title": "테스트",
+      "registrant": "이용훈",
+      "registrationDate": "2024.01.02 14:36",
+      "department": "(주)드제이"
+    },
+    {
+      "date": "01.03",
+      "roomName": "3층 회의실",
+      "meetingTime": "21:00 ~ 22:00",
+      "startTime": "21:00",
+      "endTime": "2:00",
+      "title": "테스트 일정",
+      "registrant": "이동혁",
+      "registrationDate": "2024.01.03 16:46",
+      "department": "개발2팀"
+    },
+    {
+      "date": "01.03",
+      "roomName": "3층 회의실",
+      "meetingTime": "19:00 ~ 20:00",
+      "startTime": "19:00",
+      "endTime": "0:00",
+      "title": "test2",
+      "registrant": "이동혁",
+      "registrationDate": "2024.01.03 19:28",
+      "department": "개발2팀"
+    },
+    {
+      "date": "01.04",
+      "roomName": "2층 회의실",
+      "meetingTime": "10:00 ~ 10:30",
+      "startTime": "10:00",
+      "endTime": "0:30",
+      "title": "어플드제이 일일보고 참석",
+      "registrant": "유지원",
+      "registrationDate": "2024.01.04 18:00",
+      "department": "R&D팀"
+    },
+    {
+      "date": "01.04",
+      "roomName": "3층 회의실",
+      "meetingTime": "10:00 ~ 12:00",
+      "startTime": "10:00",
+      "endTime": "2:00",
+      "title": "회의실 예약 테스트",
+      "registrant": "이동혁",
+      "registrationDate": "2024.01.04 12:26",
+      "department": "개발2팀"
+    }
+  ]
+}
