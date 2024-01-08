@@ -1,6 +1,13 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const { USERNAME, PASSWORD, INTERVAL_TIME } = require("./constant");
+const fetch = require("node-fetch");
+const {
+  USERNAME,
+  PASSWORD,
+  INTERVAL_TIME,
+  INTERVAL_TIME_DEV,
+  POST_SCHEDULE_API_URL,
+} = require("./constant");
 
 (async () => {
   try {
@@ -84,7 +91,7 @@ const { USERNAME, PASSWORD, INTERVAL_TIME } = require("./constant");
         'a[href="https://ezgroupware.bizmeka.com/groupware/planner/calendar.do"]'
       );
       await page.waitForSelector(
-        "a.sidebar-nav-menu[href='/groupware/facility/admin/conferenceRoomManage.do?']"
+        'a.sidebar-nav-menu[href="/groupware/facility/admin/conferenceRoomManage.do?"]'
       );
 
       // 회의실 관리 페이지로 이동
@@ -99,82 +106,125 @@ const { USERNAME, PASSWORD, INTERVAL_TIME } = require("./constant");
       await page.click("button.btn.btn-color5.br.btnUseCurrentStatus");
     };
 
-    // 테이블 데이터 추출 및 JSON 형식으로 변환
     const getSchedule = async () => {
+      // 페이지 내에서 테이블 데이터 추출
       const tableData = await page.evaluate(() => {
         const rows = document.querySelectorAll("table.table.table-striped tr");
-        let lastDate = "";
-        let results = [];
+        const year = document.querySelector("#searchDate").value.slice(0, 4);
+        let currentDate = "";
+        const results = [];
 
         rows.forEach((row) => {
           const columns = row.querySelectorAll("td");
           if (columns.length > 1 && columns[1].innerText.trim() !== "") {
             let data = Array.from(columns, (column) => column.innerText);
 
+            // 현재 행에 날짜가 있으면 사용하고, 없으면 currentDate 사용
             if (!/^\d{2}\.\d{2}$/.test(data[0])) {
-              data.unshift(lastDate);
+              data.unshift(currentDate);
             } else {
-              lastDate = data[0];
+              currentDate = data[0];
             }
 
             results.push({
-              date: data[0],
-              roomName: data[1],
-              meetingTime: data[2],
-              startTime: data[2].substring(0, 5),
-              endTime: data[2].substring(9),
+              meetingDt: year + "-" + currentDate.replace(".", "-"),
+              roomNm: data[1],
+              startTm: data[2].substring(0, 5),
+              endTm: data[2].substring(8),
               title: data[3],
               registrant: data[4],
-              registrationDate: data[5],
+              regDt: data[5].replace(" ", "T").replace(/\./g, "-"),
               department: data[6],
             });
           }
         });
 
-        const data = {
-          timestamp: Date.now(),
-          data: results,
-        };
-
-        return data;
+        return results;
       });
+
+      const timestamp = new Date()
+        .toLocaleString("sv-SE", {
+          timeZone: "Asia/Seoul",
+        })
+        .replace(" ", "T");
+
+      const data = {
+        timestamp,
+        data: tableData,
+      };
 
       // JSON 파일로 저장
       fs.writeFileSync(
         "./data/scheduleData.json",
-        JSON.stringify(tableData, null, 2)
+        JSON.stringify(data, null, 2)
       );
+
+      const sendSchedule = async (url, data) => {
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Post 실패, 서버 상태: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          const successMsg = `[${++tryNum}] 저장 성공: ${timestamp}
+    서버 응답: ${JSON.stringify(result)}`;
+
+          console.log(successMsg);
+
+          // Text 파일로 저장
+          fs.appendFileSync("./data/scheduleSendLog.txt", successMsg + "\n");
+        } catch (error) {
+          console.error(
+            "[",
+            tryNum,
+            "]",
+            "Post 실패, 서버 응답:",
+            error.message
+          );
+        }
+      };
+
+      sendSchedule(POST_SCHEDULE_API_URL, data);
     };
 
-    let tryNum = 0;
     // 영원히 주기적으로 테이블 데이터 추출
-    const loopDataCrawl = () =>
-      setInterval(async () => {
-        await page.waitForSelector(".btn.btn-color7.br.pl7.ml5.btnExcelExport");
-
-        await getSchedule();
-
-        console.log(
-          "스케줄 내보내기 성공:",
-          new Date().toLocaleString(),
-          "No.",
-          ++tryNum
-        );
-
-        //새로고침
-        await page.reload();
-      }, INTERVAL_TIME);
+    const loopDataCrawl = async () => {
+      console.log(
+        "지속 스케줄 내보내기 시작. 새로고침 주기:",
+        INTERVAL_TIME_DEV / 1000,
+        "초"
+      );
+      while (true) {
+        try {
+          await page.waitForSelector(
+            ".btn.btn-color7.br.pl7.ml5.btnExcelExport"
+          );
+          await getSchedule();
+          await page.reload();
+          await new Promise((resolve) =>
+            setTimeout(resolve, INTERVAL_TIME_DEV)
+          );
+        } catch (error) {
+          console.error("스케줄 내보내기 반복 중 오류 발생:", error);
+        }
+      }
+    };
 
     //메인 실행부
+    let tryNum = 0;
     const page = await browserSetting();
     await login();
     await goToDataPage();
-    console.log(
-      "지속 스케줄 내보내기 시작. 새로고침 주기:",
-      INTERVAL_TIME / 1000,
-      "초"
-    );
-    loopDataCrawl();
+    await loopDataCrawl();
 
     //브라우저 종료
     // await browser.close();
