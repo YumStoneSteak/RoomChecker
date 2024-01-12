@@ -201,7 +201,7 @@ const {
     const loopDataCrawl = async () => {
       console.log(
         "지속 스케줄 내보내기 시작. 새로고침 주기:",
-        INTERVAL_TIME_DEV / 1000,
+        INTERVAL_TIME / 1000,
         "초"
       );
       while (true) {
