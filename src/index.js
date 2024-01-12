@@ -206,12 +206,12 @@ const {
       );
       while (true) {
         try {
+          await page.reload();
           await page.waitForSelector(
-            ".btn.btn-color7.br.pl7.ml5.btnExcelExport"
+            ".btn.btn-color7.br.pl7.ml5.btnExcelExport",
+            { timeout: 60000 }
           );
           await getSchedule();
-          await page.reload();
-          await page.waitForNavigation({ waitUntil: "networkidle2" });
           await new Promise((resolve) => setTimeout(resolve, INTERVAL_TIME));
         } catch (error) {
           console.error("스케줄 내보내기 반복 중 오류 발생:", error);
