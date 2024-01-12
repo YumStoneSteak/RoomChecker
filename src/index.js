@@ -10,10 +10,11 @@ const {
 } = require("./constant");
 
 (async () => {
+  let browser;
   try {
     const browserSetting = async () => {
       // Puppeteer 브라우저 인스턴스 초기화
-      const browser = await puppeteer.launch({
+      browser = await puppeteer.launch({
         headless: false,
         userDataDir: "./data/myChromeProfile",
       });
@@ -185,7 +186,7 @@ const {
         } catch (error) {
           console.error(
             "[",
-            tryNum,
+            timestamp,
             "]",
             "Post 실패, 서버 응답:",
             error.message
@@ -210,11 +211,12 @@ const {
           );
           await getSchedule();
           await page.reload();
-          await new Promise((resolve) =>
-            setTimeout(resolve, INTERVAL_TIME_DEV)
-          );
+          await page.waitForNavigation({ waitUntil: "networkidle2" });
+          await new Promise((resolve) => setTimeout(resolve, INTERVAL_TIME));
         } catch (error) {
           console.error("스케줄 내보내기 반복 중 오류 발생:", error);
+          await browser.close();
+          break;
         }
       }
     };
@@ -225,10 +227,8 @@ const {
     await login();
     await goToDataPage();
     await loopDataCrawl();
-
-    //브라우저 종료
-    // await browser.close();
   } catch (error) {
     console.error("스케줄 내보내기 실패: ", error);
+    await browser.close();
   }
 })();
