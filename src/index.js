@@ -209,7 +209,7 @@ const {
           await page.reload();
           await page.waitForSelector(
             ".btn.btn-color7.br.pl7.ml5.btnExcelExport",
-            { timeout: 60000 }
+            { timeout: 120000 }
           );
           await getSchedule();
           await new Promise((resolve) => setTimeout(resolve, INTERVAL_TIME));
