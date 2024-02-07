@@ -2,11 +2,12 @@
 
 ### 실행 및 빌드 명령어
 
-- 실행 : node index.js
+- 실행 : node src/index.js
 
 ### 기술스택
 
-- Node.js
+- Node.js v20.10.0
+- puppeteer
 
 ### Git Commit Convention
 
