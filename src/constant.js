@@ -5,6 +5,7 @@ const INTERVAL_TIME = 300000;
 const INTERVAL_TIME_DEV = 10000;
 const POST_SCHEDULE_API_URL = "http://192.168.1.146:8090/meetingRoom/upload";
 const GET_SCHEDULE_API_URL = "http://192.168.1.146:8090/meetingRoom/get";
+const ROOMNAMES = ["2층 대회의실", "3층 6인 회의실:", "3층 4인 회의실"];
 
 module.exports = {
   USERNAME,
@@ -12,4 +13,5 @@ module.exports = {
   INTERVAL_TIME,
   INTERVAL_TIME_DEV,
   POST_SCHEDULE_API_URL,
+  ROOMNAMES,
 };

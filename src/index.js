@@ -7,10 +7,19 @@ const {
   INTERVAL_TIME,
   INTERVAL_TIME_DEV,
   POST_SCHEDULE_API_URL,
+  ROOMNAMES,
 } = require("./constant");
 
 let browser;
 let tryNum = 0;
+
+const getTimestamp = () => {
+  return new Date()
+    .toLocaleString("sv-SE", {
+      timeZone: "Asia/Seoul",
+    })
+    .replace(" ", "T");
+};
 
 const browserSetting = async () => {
   // Puppeteer 브라우저 인스턴스 초기화
@@ -73,7 +82,10 @@ const login = async (page) => {
     fs.writeFileSync("./data/cookies.json", JSON.stringify(cookies, null, 2));
 
     await page.waitForSelector(
-      'a[href="https://ezgroupware.bizmeka.com/groupware/planner/calendar.do"]'
+      'a[href="https://ezgroupware.bizmeka.com/groupware/planner/calendar.do"]',
+      {
+        timeout: 1000 * 60 * 5,
+      }
     );
   }
 
@@ -136,23 +148,17 @@ const getSchedule = async (page) => {
     return results;
   });
 
-  const timestamp = new Date()
-    .toLocaleString("sv-SE", {
-      timeZone: "Asia/Seoul",
-    })
-    .replace(" ", "T");
-
   const data = {
-    timestamp,
+    timestamp: getTimestamp(),
     data: tableData,
   };
 
   // JSON 파일로 저장
   fs.writeFileSync("./data/scheduleData.json", JSON.stringify(data, null, 2));
 
-  const sendSchedule = async (url, data) => {
+  const sendSchedule = async (data) => {
     try {
-      const response = await fetch(url, {
+      const response = await fetch(POST_SCHEDULE_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -166,7 +172,7 @@ const getSchedule = async (page) => {
 
       const result = await response.json();
 
-      const successMsg = `[${++tryNum}] 저장 성공: ${timestamp}
+      const successMsg = `[${++tryNum}] 저장 성공: ${getTimestamp()}
     서버 응답: ${JSON.stringify(result.msg)}, ${JSON.stringify(
         result.data.timestamp
       )}`;
@@ -175,7 +181,7 @@ const getSchedule = async (page) => {
 
       fs.appendFileSync("./data/scheduleSendLog.txt", successMsg + "\n");
     } catch (error) {
-      const failMsg = "[" + timestamp + "]" + "Post 실패";
+      const failMsg = "[" + getTimestamp() + "]" + "Post 실패";
       console.error(failMsg);
       fs.appendFileSync("./data/scheduleSendLog.txt", failMsg + "\n");
 
@@ -183,7 +189,7 @@ const getSchedule = async (page) => {
     }
   };
 
-  await sendSchedule(POST_SCHEDULE_API_URL, data);
+  await sendSchedule(data);
 };
 
 const loopDataCrawl = async (page) => {
@@ -196,7 +202,7 @@ const loopDataCrawl = async (page) => {
     try {
       await page.reload();
       await page.waitForSelector(".btn.btn-color7.br.pl7.ml5.btnExcelExport", {
-        timeout: 60000,
+        timeout: 1000 * 60 * 1,
       });
       await getSchedule(page);
       await new Promise((resolve) => setTimeout(resolve, INTERVAL_TIME));
@@ -217,7 +223,31 @@ const main = async () => {
     await goToDataPage(page);
     await loopDataCrawl(page);
   } catch (error) {
-    const failMsg = "오류 발생, 재시작: ";
+    const errorMsg = ROOMNAMES.map((roomNm) => ({
+      meetingDt: getTimestamp().slice(0, 10),
+      roomNm,
+      startTm: "08:00",
+      endTm: "20:00",
+      title: "오류 발생",
+      registrant: "RoomChecker Error",
+      regDt: getTimestamp().slice(0, 16),
+      department: "회의실 관리자에게 문의하세요.",
+    }));
+
+    const data = {
+      timestamp: getTimestamp(),
+      data: errorMsg,
+    };
+
+    const response = await fetch(POST_SCHEDULE_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const failMsg = "[" + getTimestamp() + "]" + "오류 발생, 재시작: ";
     console.error(failMsg, error);
     fs.appendFileSync("./data/scheduleSendLog.txt", failMsg + "\n");
     await browser.close();
