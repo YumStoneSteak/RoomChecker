@@ -193,11 +193,7 @@ const getSchedule = async (page) => {
 };
 
 const loopDataCrawl = async (page) => {
-  console.log(
-    "지속 스케줄 내보내기 시작. 새로고침 주기:",
-    INTERVAL_TIME / 1000,
-    "초"
-  );
+  console.log("지속 스케줄 내보내기 시작. 새로고침 주기:", INTERVAL_TIME, "초");
   while (true) {
     try {
       await page.reload();
@@ -205,7 +201,7 @@ const loopDataCrawl = async (page) => {
         timeout: 1000 * 60 * 1,
       });
       await getSchedule(page);
-      await new Promise((resolve) => setTimeout(resolve, INTERVAL_TIME));
+      await new Promise((resolve) => setTimeout(resolve, INTERVAL_TIME * 1000));
     } catch (error) {
       const failMsg = "스케줄 내보내기 반복 중 오류 발생";
       console.error(failMsg);
