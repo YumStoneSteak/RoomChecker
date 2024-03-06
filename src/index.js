@@ -8,6 +8,7 @@ const {
   INTERVAL_TIME_DEV,
   POST_SCHEDULE_API_URL,
   ROOMNAMES,
+  WORK_TIME,
 } = require("./constant");
 
 let browser;
@@ -195,6 +196,13 @@ const getSchedule = async (page) => {
 const loopDataCrawl = async (page) => {
   console.log("지속 스케줄 내보내기 시작. 새로고침 주기:", INTERVAL_TIME, "초");
   while (true) {
+    if (!isWorkHours()) {
+      console.log(
+        "[" + getTimestamp() + "]" + " loopDataCrawl: 근무 시간까지 대기"
+      );
+      throw error;
+    }
+
     try {
       await page.reload();
       await page.waitForSelector(".btn.btn-color7.br.pl7.ml5.btnExcelExport", {
@@ -212,6 +220,12 @@ const loopDataCrawl = async (page) => {
 };
 
 const main = async () => {
+  if (!isWorkHours()) {
+    console.log("[" + getTimestamp() + "]" + " main: 근무 시간까지 대기");
+    setTimeout(main, calculateNextRunTime()); // 다음 근무 시간까지 대기 후 재실행
+    return;
+  }
+
   try {
     tryNum = 0;
     const page = await browserSetting();
@@ -219,20 +233,31 @@ const main = async () => {
     await goToDataPage(page);
     await loopDataCrawl(page);
   } catch (error) {
+    const notWorkHourMsg = ROOMNAMES.map((roomNm) => ({
+      meetingDt: getTimestamp().slice(0, 10),
+      roomNm,
+      startTm: "08:00",
+      endTm: "20:00",
+      title: "주중 8~20시 이외",
+      registrant: "Not Working Hour",
+      regDt: getTimestamp().slice(0, 16),
+      department: "근무 시간이 아닙니다",
+    }));
+
     const errorMsg = ROOMNAMES.map((roomNm) => ({
       meetingDt: getTimestamp().slice(0, 10),
       roomNm,
       startTm: "08:00",
       endTm: "20:00",
-      title: "오류 발생",
+      title: "회의실 관리자에게 문의하세요",
       registrant: "RoomChecker Error",
       regDt: getTimestamp().slice(0, 16),
-      department: "회의실 관리자에게 문의하세요.",
+      department: "오류 발생",
     }));
 
     const data = {
       timestamp: getTimestamp(),
-      data: errorMsg,
+      data: isWorkHours() ? errorMsg : notWorkHourMsg,
     };
 
     const response = await fetch(POST_SCHEDULE_API_URL, {
@@ -243,12 +268,48 @@ const main = async () => {
       body: JSON.stringify(data),
     });
 
-    const failMsg = "[" + getTimestamp() + "]" + "오류 발생, 재시작: ";
+    const failMsg = "[" + getTimestamp() + "]" + " 오류 발생, 재시작: ";
     console.error(failMsg, error);
     fs.appendFileSync("./data/scheduleSendLog.txt", failMsg + "\n");
+  } finally {
     await browser.close();
     main();
   }
 };
+
+// 근무 시간 판단 함수
+function isWorkHours() {
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const hour = now.getHours();
+  return (
+    dayOfWeek >= 1 &&
+    dayOfWeek <= 5 &&
+    hour >= WORK_TIME.START &&
+    hour < WORK_TIME.END
+  );
+}
+
+// 다음 근무 시간까지 대기 시간 계산 함수
+function calculateNextRunTime() {
+  const now = new Date();
+  let nextRun = new Date(now);
+  nextRun.setHours(WORK_TIME.START, 0, 0, 0); // 다음날 START시로 초기 설정
+
+  if (now.getHours() >= WORK_TIME.END) {
+    nextRun.setDate(now.getDate() + 1); // END시 이후면 다음 날로 설정
+  }
+
+  // 주말 처리
+  if (nextRun.getDay() === 6) {
+    // 토요일
+    nextRun.setDate(nextRun.getDate() + 2); // 월요일로 변경
+  } else if (nextRun.getDay() === 0) {
+    // 일요일
+    nextRun.setDate(nextRun.getDate() + 1); // 월요일로 변경
+  }
+
+  return nextRun.getTime() - now.getTime();
+}
 
 main();
