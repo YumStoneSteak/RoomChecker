@@ -25,7 +25,7 @@ const getTimestamp = () => {
 const browserSetting = async () => {
   // Puppeteer 브라우저 인스턴스 초기화
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     userDataDir: "./data/myChromeProfile",
   });
 
