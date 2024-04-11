@@ -27,6 +27,7 @@ const browserSetting = async () => {
   browser = await puppeteer.launch({
     headless: true,
     userDataDir: "./data/myChromeProfile",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   // 기존 탭을 가져오기
@@ -180,7 +181,7 @@ const getSchedule = async (page) => {
 
       console.log(successMsg);
 
-      fs.appendFileSync("./data/scheduleSendLog.txt", successMsg + "\n");
+      //fs.appendFileSync("./data/scheduleSendLog.txt", successMsg + "\n");
     } catch (error) {
       const failMsg = "[" + getTimestamp() + "]" + "Post 실패";
       console.error(failMsg);
