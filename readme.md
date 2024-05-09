@@ -6,8 +6,17 @@
 
 ### 기술스택
 
-- Node.js v20.10.0
+- Node.js v16(centos7 환경 최적화)
 - puppeteer
+
+### 기능설명
+
+- bizmeka의 일정 - 관리자 메뉴(회의실 관리) - 이용현황 조회 - 회의실 월간 이용 현황을 크롤링함.
+- POST API 통해 meetingRoom DB에 저장. RoomWatcher 에서 GET API 통해 데이터 사용.
+- console로 성공, 실패 시간 기록
+- json으로 실패 시간 기록
+- 주간 WORK_TIME 이내의 시간만 크롤링 작동.
+- 로그인, 크롤링 실패 시 자동 재시작.
 
 ### Git Commit Convention
 

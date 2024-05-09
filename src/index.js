@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const fetch = require("node-fetch");
 const {
+  LOG_MODE,
   USERNAME,
   PASSWORD,
   INTERVAL_TIME,
@@ -25,7 +26,8 @@ const getTimestamp = () => {
 const browserSetting = async () => {
   // Puppeteer 브라우저 인스턴스 초기화
   browser = await puppeteer.launch({
-    headless: true,
+    //GUI 활성, 비활성
+    headless: false,
     userDataDir: "./data/myChromeProfile",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
@@ -156,7 +158,8 @@ const getSchedule = async (page) => {
   };
 
   // JSON 파일로 저장
-  fs.writeFileSync("./data/scheduleData.json", JSON.stringify(data, null, 2));
+  if (LOG_MODE)
+    fs.writeFileSync("./data/scheduleData.json", JSON.stringify(data, null, 2));
 
   const sendSchedule = async (data) => {
     try {
@@ -180,13 +183,12 @@ const getSchedule = async (page) => {
       )}`;
 
       console.log(successMsg);
-
-      //fs.appendFileSync("./data/scheduleSendLog.txt", successMsg + "\n");
+      if (LOG_MODE)
+        fs.appendFileSync("./data/scheduleSendLog.txt", successMsg + "\n");
     } catch (error) {
       const failMsg = "[" + getTimestamp() + "]" + "Post 실패";
       console.error(failMsg);
       fs.appendFileSync("./data/scheduleSendLog.txt", failMsg + "\n");
-
       throw error;
     }
   };
