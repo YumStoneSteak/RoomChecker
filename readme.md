@@ -18,6 +18,13 @@
 - 주간 WORK_TIME 이내의 시간만 크롤링 작동.
 - 로그인, 크롤링 실패 시 자동 재시작.
 
+### 서버 세팅
+
+- 파일 경로: /usr/local/referenceRoom/RoomChecker/RoomChecker
+- 부팅시 자동 실행: /etc/systemd/system 에서 room-checker.service 등록됨
+- 실행 명령어: nohup node /usr/local/referenceRoom/RoomChecker/RoomChecker/src/index.js &
+- 실행 확인: ps aux | grep '/usr/local/referenceRoom/RoomChecker/RoomChecker/src/index.js'
+
 ### Git Commit Convention
 
 - Feat : 새로운 기능 추가
