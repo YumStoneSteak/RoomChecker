@@ -24,6 +24,7 @@
 - 부팅시 자동 실행: /etc/systemd/system 에서 room-checker.service 등록됨
 - 실행 명령어: nohup node /usr/local/referenceRoom/RoomChecker/RoomChecker/src/index.js &
 - 실행 확인: ps aux | grep '/usr/local/referenceRoom/RoomChecker/RoomChecker/src/index.js'
+- git 주소: https://github.com/YumStoneSteak/RoomChecker.git
 
 ### Git Commit Convention
 
